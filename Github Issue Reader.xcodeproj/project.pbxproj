@@ -13,6 +13,8 @@
 		FFB3D64728BE8B6C005DB032 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFB3D64528BE8B6C005DB032 /* Main.storyboard */; };
 		FFB3D64928BE8B6F005DB032 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFB3D64828BE8B6F005DB032 /* Assets.xcassets */; };
 		FFB3D64C28BE8B6F005DB032 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFB3D64A28BE8B6F005DB032 /* LaunchScreen.storyboard */; };
+		FFB3D65728BE8E5C005DB032 /* IssueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB3D65628BE8E5C005DB032 /* IssueModel.swift */; };
+		FFB3D65928BE8FB8005DB032 /* UserModel .swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB3D65828BE8FB8005DB032 /* UserModel .swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		FFB3D64828BE8B6F005DB032 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFB3D64B28BE8B6F005DB032 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FFB3D64D28BE8B6F005DB032 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFB3D65628BE8E5C005DB032 /* IssueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueModel.swift; sourceTree = "<group>"; };
+		FFB3D65828BE8FB8005DB032 /* UserModel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserModel .swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,9 @@
 		FFB3D63E28BE8B6C005DB032 /* Github Issue Reader */ = {
 			isa = PBXGroup;
 			children = (
+				FFB3D65528BE8DE5005DB032 /* Views */,
+				FFB3D65428BE8DD4005DB032 /* ViewModels */,
+				FFB3D65328BE8DCB005DB032 /* Models */,
 				FFB3D63F28BE8B6C005DB032 /* AppDelegate.swift */,
 				FFB3D64128BE8B6C005DB032 /* SceneDelegate.swift */,
 				FFB3D64328BE8B6C005DB032 /* ViewController.swift */,
@@ -65,6 +72,29 @@
 				FFB3D64D28BE8B6F005DB032 /* Info.plist */,
 			);
 			path = "Github Issue Reader";
+			sourceTree = "<group>";
+		};
+		FFB3D65328BE8DCB005DB032 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FFB3D65628BE8E5C005DB032 /* IssueModel.swift */,
+				FFB3D65828BE8FB8005DB032 /* UserModel .swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FFB3D65428BE8DD4005DB032 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FFB3D65528BE8DE5005DB032 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +169,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFB3D64428BE8B6C005DB032 /* ViewController.swift in Sources */,
+				FFB3D65728BE8E5C005DB032 /* IssueModel.swift in Sources */,
+				FFB3D65928BE8FB8005DB032 /* UserModel .swift in Sources */,
 				FFB3D64028BE8B6C005DB032 /* AppDelegate.swift in Sources */,
 				FFB3D64228BE8B6C005DB032 /* SceneDelegate.swift in Sources */,
 			);

@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Issue {
+struct Issue: Codable {
     let id: Int
     let title: String?
     let state: String?
     let user: User?
     let body: String?
-    let createdAt: Date?
+    let createdAt: String?
 }

@@ -11,7 +11,6 @@ class ViewController: UIViewController {
     
     let viewModel = IssueViewModel()
     
-    
     var containerView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -45,8 +44,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemPink
-        setupUI()
         
+        // AUTO SET UP TYPE TEXT WHEN LAUNCH
+        orgTextfield.text = "Apple"
+        repoTextfield.text = "Swift"
+        
+        setupUI()
     }
     
     func setupUI() {
@@ -75,13 +78,22 @@ class ViewController: UIViewController {
             return
         }
         
-        viewModel.fetchIssues(for: organization, repo: repo)
-        
-        for issue in viewModel.issues {
-            print(issue.title)
+        viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
+            print("Successfully received issues.")
+            
+            for issue in self.viewModel.issues {
+                print(issue.title)
+            }
+            
+            let layout = UICollectionViewFlowLayout()
+            
+            let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
+            
+            issuesVC.viewModel = viewModel
+            print("Presenting ViewController")
+            present(issuesVC, animated: true)
         }
-        
     }
-
+    
 }
 

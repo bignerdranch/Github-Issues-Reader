@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Issue: Codable {
+struct Issue: Codable, Equatable {
     let id: Int
     let title: String?
     let state: String?
@@ -15,4 +15,3 @@ struct Issue: Codable {
     let body: String?
     let createdAt: String?
 }
-

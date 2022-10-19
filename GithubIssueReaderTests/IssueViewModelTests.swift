@@ -79,20 +79,18 @@ final class IssueViewModelTests: XCTestCase {
 
         let issueViewModel = IssueViewModel()
 
-        issueViewModel.fetchIssues(for: "apple", repo: "swift") { downloadedIssues in
-            XCTAssertNotNil(downloadedIssues)
+        issueViewModel.fetchIssues(for: "apple", repo: "swift") { downloadedSwiftIssues in
+            XCTAssertNotNil(downloadedSwiftIssues)
 
-            XCTAssertEqual(issueViewModel.issues, downloadedIssues)
+            XCTAssertEqual(issueViewModel.issues, downloadedSwiftIssues)
 
             firstFetch.fulfill()
 
-            issueViewModel.fetchIssues(for: "apple", repo: "swift-syntax") { downloadedIssues in
-                XCTAssertIDK(issueViewModel.issues, ?????)
+            issueViewModel.fetchIssues(for: "apple", repo: "swift-syntax") { downloadedSwiftSyntaxIssues in
+                XCTAssertEqual(issueViewModel.issues.count, 2) // It's not 2, what should this number be
             }
         }
 
         waitForExpectations(timeout: 10.0)
-
-
     }
 }

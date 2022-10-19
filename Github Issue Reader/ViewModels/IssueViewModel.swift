@@ -27,5 +27,20 @@ class IssueViewModel {
              }
          }
      }
-    
+
+    func fetchIssuesAsync(for organization: String, repo: String) async -> [Issue]? {
+        await withCheckedContinuation { continuation in
+            fetchIssues(for: organization, repo: repo) { downloadedIssues in
+                continuation.resume(returning: downloadedIssues)
+            }
+        }
+    }
+
+    func sortByTitle() {
+        issues.sort { first, second in
+            guard let firstTitle = first.title else { return false }
+            guard let secondTitle = second.title else { return true }
+            return firstTitle < secondTitle
+        }
+    }
 }

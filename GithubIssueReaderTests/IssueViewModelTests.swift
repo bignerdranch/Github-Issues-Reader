@@ -73,24 +73,42 @@ final class IssueViewModelTests: XCTestCase {
         waitForExpectations(timeout: 10.0)
     }
 
-    func testIssueViewModel_doubleFetch() {
-        let firstFetch = expectation(description: "first issues fetched")
-        let secondFetch = expectation(description: "second issues fetched")
+    func testIssueViewModel_badFetch() async {
+        self.executionTimeAllowance = 0.1
 
         let issueViewModel = IssueViewModel()
-
-        issueViewModel.fetchIssues(for: "apple", repo: "swift") { downloadedSwiftIssues in
-            XCTAssertNotNil(downloadedSwiftIssues)
-
-            XCTAssertEqual(issueViewModel.issues, downloadedSwiftIssues)
-
-            firstFetch.fulfill()
-
-            issueViewModel.fetchIssues(for: "apple", repo: "swift-syntax") { downloadedSwiftSyntaxIssues in
-                XCTAssertEqual(issueViewModel.issues.count, 2) // It's not 2, what should this number be
-            }
-        }
-
-        waitForExpectations(timeout: 10.0)
+        let issues = await issueViewModel.fetchIssuesAsync(for: "asdjklfkajsfklasdjflkasd", repo: "swift")
+        XCTAssertNil(issues)
     }
+
+
+    func testIssueViewModel_sortingTitle() {
+        // Given
+        let issueViewModel = IssueViewModel()
+        let issueVia = Issue(
+            id: 3,
+            title: "Via's Issue",
+            state: "",
+            user: .init(id: 123, login: "Via", avatarURL: nil),
+            body: "of the Fairchilds",
+            createdAt: "now"
+        )
+        let issueKevin = Issue(
+            id: 2,
+            title: "Kevin's Issue",
+            state: "GA",
+            user: .init(id: 123, login: "Kevin", avatarURL: nil),
+            body: "of the Randrups",
+            createdAt: "now"
+        )
+        issueViewModel.issues = [issueVia, issueKevin]
+
+        // When
+        issueViewModel.sortByTitle()
+
+        // Then
+        XCTAssertEqual(issueViewModel.issues[0], issueKevin)
+        XCTAssertEqual(issueViewModel.issues[1], issueVia)
+    }
+
 }

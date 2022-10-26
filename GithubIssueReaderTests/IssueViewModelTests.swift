@@ -81,6 +81,29 @@ final class IssueViewModelTests: XCTestCase {
         XCTAssertNil(issues)
     }
 
+    func testIssueViewModel_doubleFetch() {
+        var firstFetch = expectation(description: "first issue fetched")
+        var secondFetch = expectation(description: "second issue fetched")
+        
+        var issueViewModel = IssueViewModel()
+        
+        issueViewModel.fetchIssues(for: "apple", repo: "swift") { downloadedSwiftIssues in
+            XCTAssertNotNil(downloadedSwiftIssues)
+            
+            XCTAssertEqual(issueViewModel.issues, downloadedSwiftIssues)
+            
+            firstFetch.fulfill()
+            
+            issueViewModel.fetchIssues(for: "apple", repo: "swift-syntax") { downloadedSwiftAndSwiftSyntaxIssues in
+                
+                XCTAssertEqual(issueViewModel.issues.count, 60)
+                
+                secondFetch.fulfill()
+                
+            }
+        }
+        waitForExpectations(timeout: 10.0)
+    }
 
     func testIssueViewModel_sortingTitle() {
         // Given
@@ -110,5 +133,43 @@ final class IssueViewModelTests: XCTestCase {
         XCTAssertEqual(issueViewModel.issues[0], issueKevin)
         XCTAssertEqual(issueViewModel.issues[1], issueVia)
     }
+    
+    
+    func testIssueViewModel_sortingUser() {
+        var firstFetch = expectation(description: "first issue fetched")
+        
+        // giveme
+        let issueViewModel = IssueViewModel()
+        let issueVia = Issue(
+            id: 3,
+            title: "Via's Issue",
+            state: "",
+            user: .init(id: 123, login: "Via", avatarURL: nil),
+            body: "of the Fairchilds",
+            createdAt: "now"
+        )
+        let issueKevin = Issue(
+            id: 2,
+            title: "Kevin's Issue",
+            state: "GA",
+            user: .init(id: 927, login: "Kevin", avatarURL: nil),
+            body: "of the Randrups",
+            createdAt: "now"
+        )
+        issueViewModel.issues = [issueVia, issueKevin]
 
+        // when
+        issueViewModel.sortByUser()
+        
+        // thennnnn
+        continueAfterFailure = false
+
+        XCTAssertEqual(issueViewModel.issues.first, issueVia)
+        XCTAssertEqual(issueViewModel.issues[1], issueKevin)
+
+        firstFetch.fulfill()
+        
+        waitForExpectations(timeout: 10.0)
+
+    }
 }

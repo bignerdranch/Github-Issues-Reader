@@ -30,8 +30,8 @@ class ViewController: UIViewController {
     var gitSubLabel: UILabel = {
         let label = UILabel()
         label.text = "View issues in a repository:"
-        label.font = UIFont.preferredFont(forTextStyle: .title2)
-        label.textColor = UIColor.systemGray
+        label.font = .preferredFont(forTextStyle: .title2)
+        label.textColor = .systemGray
         return label
     }()
     
@@ -68,9 +68,9 @@ class ViewController: UIViewController {
     lazy var submitButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
-        button.setTitle("View Issues", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.tintColor = .black
+        config.title = "View Issues"
+        config.baseForegroundColor = .white
+        config.baseBackgroundColor = .black
         config.cornerStyle = .capsule
         button.configuration = config
         button.addTarget(self, action: #selector(fetchIssues), for: .touchUpInside)
@@ -91,15 +91,17 @@ class ViewController: UIViewController {
     
     func setupUI() {
         
+        let standardPadding: CGFloat = 20
+        
         submitButton.titleLabel?.text = "Submit"
         containerView.addArrangedSubview(gitLabel)
         containerView.addArrangedSubview(gitSubLabel)
-        containerView.setCustomSpacing(20, after: gitSubLabel)
+        containerView.setCustomSpacing(standardPadding, after: gitSubLabel)
         containerView.addArrangedSubview(orgLabel)
         containerView.addArrangedSubview(orgTextfield)
         containerView.addArrangedSubview(repoLabel)
         containerView.addArrangedSubview(repoTextfield)
-        containerView.setCustomSpacing(20, after: repoTextfield)
+        containerView.setCustomSpacing(standardPadding, after: repoTextfield)
         containerView.addArrangedSubview(submitButton)
         
         view.addSubview(containerView)

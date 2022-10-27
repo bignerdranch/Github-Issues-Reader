@@ -39,7 +39,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     
     
     func configureCollectionView() {
-        collectionView.backgroundColor = .systemPink
+        collectionView.backgroundColor = .systemGray2
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

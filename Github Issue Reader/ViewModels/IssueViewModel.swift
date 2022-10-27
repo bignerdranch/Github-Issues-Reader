@@ -43,4 +43,12 @@ class IssueViewModel {
             return firstTitle < secondTitle
         }
     }
+    
+    func sortByUser() {
+        issues.sort { first, second in
+            guard let firstUser = first.user?.id else { return false}
+            guard let secondUser = second.user?.id else { return true }
+            return firstUser < secondUser
+        }
+    }
 }

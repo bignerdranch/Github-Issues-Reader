@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B6AD210528FF4E18009B3345 /* GithubIssueReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD210428FF4E18009B3345 /* GithubIssueReaderTests.swift */; };
 		B6AD210C28FF5263009B3345 /* IssueViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD210B28FF5263009B3345 /* IssueViewModelTests.swift */; };
+		B6AD210F2911D0D5009B3345 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6AD210E2911D0D5009B3345 /* Storyboard.storyboard */; };
 		FD157EF428C0032000A05E12 /* IssuesCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD157EF328C0032000A05E12 /* IssuesCollectionVC.swift */; };
 		FD4D2C0028F8B2970024AD05 /* IssuePreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD4D2BFF28F8B2970024AD05 /* IssuePreviewView.xib */; };
 		FD4D2C0228F8B2F50024AD05 /* IssuePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4D2C0128F8B2F50024AD05 /* IssuePreviewView.swift */; };
@@ -38,6 +39,7 @@
 		B6AD210228FF4E18009B3345 /* GithubIssueReaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GithubIssueReaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6AD210428FF4E18009B3345 /* GithubIssueReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubIssueReaderTests.swift; sourceTree = "<group>"; };
 		B6AD210B28FF5263009B3345 /* IssueViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueViewModelTests.swift; sourceTree = "<group>"; };
+		B6AD210E2911D0D5009B3345 /* Storyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		FD157EF328C0032000A05E12 /* IssuesCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuesCollectionVC.swift; sourceTree = "<group>"; };
 		FD4D2BFF28F8B2970024AD05 /* IssuePreviewView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IssuePreviewView.xib; sourceTree = "<group>"; };
 		FD4D2C0128F8B2F50024AD05 /* IssuePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuePreviewView.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				FD52A5A928F9F6D100819D23 /* IssuePreviewCVCell.swift */,
 				FD4D2BFF28F8B2970024AD05 /* IssuePreviewView.xib */,
 				FD4D2C0128F8B2F50024AD05 /* IssuePreviewView.swift */,
+				B6AD210E2911D0D5009B3345 /* Storyboard.storyboard */,
 				FFB3D64828BE8B6F005DB032 /* Assets.xcassets */,
 				FFB3D64A28BE8B6F005DB032 /* LaunchScreen.storyboard */,
 				FFB3D64D28BE8B6F005DB032 /* Info.plist */,
@@ -242,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFB3D64C28BE8B6F005DB032 /* LaunchScreen.storyboard in Resources */,
+				B6AD210F2911D0D5009B3345 /* Storyboard.storyboard in Resources */,
 				FFB3D64928BE8B6F005DB032 /* Assets.xcassets in Resources */,
 				FD4D2C0028F8B2970024AD05 /* IssuePreviewView.xib in Resources */,
 			);

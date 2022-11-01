@@ -34,8 +34,8 @@ class IssuePreviewView: UIView {
        
     }
     
-    class func nib() -> IssuePreviewView {
-        return UINib(nibName: "IssuePreviewView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! IssuePreviewView
-    }
+//    class func nib() -> IssuePreviewView {
+//        return UINib(nibName: "IssuePreviewView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! IssuePreviewView
+//    }
     
 }

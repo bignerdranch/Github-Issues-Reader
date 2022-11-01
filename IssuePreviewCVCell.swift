@@ -11,26 +11,85 @@ import UIKit
 class IssuePreviewCVCell: UICollectionViewCell {
     static var reuseID = "IssuePreviewCVCell"
     
-    var issuePreviewView: IssuePreviewView = {
-        var issue = IssuePreviewView.nib()
-        issue.translatesAutoresizingMaskIntoConstraints = false
-        return issue
+    var containerView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .vertical
+        view.alignment = .leading
+        view.distribution = .fill
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
-    func configure(issue: Issue){
-        issuePreviewView.configure(issue: issue)
-        addSubview(issuePreviewView)
-        // subView constraints added here
-        let constraints = [
-            issuePreviewView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            issuePreviewView.topAnchor.constraint(equalTo: self.topAnchor),
-            issuePreviewView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            issuePreviewView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        ]
+    var containerHView: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+        view.alignment = .fill
+        view.distribution = .fill
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var issueTitle: UILabel = {
+        var label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        return label
+    }()
+    
+    let userPic = UIImageView (image: UIImage(systemName: "person.circle"))
+    
+    var issueUsername: UILabel = {
+        var label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .caption1)
+        return label
+    }()
+    
+    var spacerView = UIView()
+    
+    var issueStatus: UIButton = {
+        let button = UIButton()
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .capsule
+        config.baseBackgroundColor = .green
+        button.configuration = config
+        button.isEnabled = false
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super .init(frame: frame)
+        contentView.addSubview(containerView)
+        containerView.addArrangedSubview(issueTitle)
+        containerView.addArrangedSubview(containerHView)
+        containerHView.addArrangedSubview(userPic)
+        containerHView.addArrangedSubview(issueUsername)
+        containerHView.addArrangedSubview(spacerView)
+        containerHView.addArrangedSubview(issueStatus)
         
-        NSLayoutConstraint.activate(constraints)
+        let constraints = [
+                containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+                containerView.topAnchor.constraint(equalTo: self.topAnchor),
+                containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+                containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+                userPic.widthAnchor.constraint(equalToConstant: 20),
+                userPic.heightAnchor.constraint(equalTo: userPic.widthAnchor),
+                
+            ]
+            NSLayoutConstraint.activate(constraints)
+        
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(issue: Issue){
+        issueTitle.text = issue.title
+        issueUsername.text = issue.user?.login
+        issueStatus.configuration?.title = issue.state
+
+       // issueStatus.configuration?.baseBackgroundColor = .green
+        
+    }
 }
 
 

@@ -11,6 +11,10 @@ private let reuseIdentifier = "Cell"
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    func title(){
+        navigationItem.title = "Issues"
+    }
+    
     var viewModel: IssueViewModel?
     
     override func viewDidLoad() {
@@ -21,12 +25,10 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         self.collectionView.register(IssuePreviewCVCell.self, forCellWithReuseIdentifier: IssuePreviewCVCell.reuseID)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    
     
     func configureViewController() {
         view.backgroundColor = .systemBackground
@@ -64,9 +66,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         return 1
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize.init(width: view.frame.size.width, height: 250)
-//    }
-    
-    // collectionView data source protocols - common pattern
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize.init(width: view.bounds.size.width, height: 250)
+    }
 }

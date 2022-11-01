@@ -11,6 +11,32 @@ private let reuseIdentifier = "Cell"
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    func title(){
+        navigationItem.title = "Issues"
+    }
+    
+//    class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+//
+//        override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+//            let attributes = super.layoutAttributesForElements(in: rect)
+//
+//            var leftMargin = sectionInset.left
+//            var maxY: CGFloat = -1.0
+//            attributes?.forEach { layoutAttribute in
+//                if layoutAttribute.frame.origin.y >= maxY {
+//                    leftMargin = sectionInset.left
+//                }
+//
+//                layoutAttribute.frame.origin.x = leftMargin
+//
+//                leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
+//                maxY = max(layoutAttribute.frame.maxY , maxY)
+//            }
+//
+//            return attributes
+//        }
+//    }
+    
     var viewModel: IssueViewModel?
     
     override func viewDidLoad() {
@@ -19,6 +45,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         configureCollectionView()
         print(viewModel?.issues.count)
         self.collectionView.register(IssuePreviewCVCell.self, forCellWithReuseIdentifier: IssuePreviewCVCell.reuseID)
+        title()
     }
     
     
@@ -39,7 +66,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     
     
     func configureCollectionView() {
-        collectionView.backgroundColor = .systemGray2
+        collectionView.backgroundColor = .systemGray5
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -64,9 +91,10 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         return 1
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize.init(width: view.frame.size.width, height: 250)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize.init(width: view.bounds.size.width, height: 250)
+    }
+    
     
     // collectionView data source protocols - common pattern
 }

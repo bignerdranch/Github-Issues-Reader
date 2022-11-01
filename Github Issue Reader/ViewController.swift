@@ -8,7 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
     let viewModel = IssueViewModel()
     
     var containerView: UIStackView = {
@@ -82,6 +81,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemGray6
         
+       // self.navController
+        
         // AUTO SET UP TYPE TEXT WHEN LAUNCH
         orgTextfield.text = "Apple"
         repoTextfield.text = "Swift"
@@ -136,7 +137,7 @@ class ViewController: UIViewController {
             
             issuesVC.viewModel = viewModel
             print("Presenting ViewController")
-            present(issuesVC, animated: true)
+            self.navigationController?.pushViewController(issuesVC, animated: true)
         }
     }
     

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="SFS-Vi-fhm" customClass="IssuePreviewView" customModule="Github_Issue_Reader" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="376" height="114"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jn5-pQ-ikj">
+                    <rect key="frame" x="16" y="16" width="344" height="19"/>
+                    <attributedString key="attributedText">
+                        <fragment content="Issue Type">
+                            <attributes>
+                                <font key="NSFont" metaFont="systemBold" size="17"/>
+                                <font key="NSOriginalFont" metaFont="systemBold" size="17"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" ambiguous="YES" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="oWZ-Zi-kCz">
+                    <rect key="frame" x="16" y="47.5" width="20" height="19"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0F-XG-sPk">
+                    <rect key="frame" x="271" y="46" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pX7-2W-F9h">
+                    <rect key="frame" x="39" y="47" width="78.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="2pj-EC-V0L"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="pX7-2W-F9h" firstAttribute="top" secondItem="Jn5-pQ-ikj" secondAttribute="bottom" constant="12" id="5wQ-YQ-gX1"/>
+                <constraint firstItem="oWZ-Zi-kCz" firstAttribute="top" secondItem="Jn5-pQ-ikj" secondAttribute="bottom" constant="12" id="D1H-gk-AzM"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pX7-2W-F9h" secondAttribute="trailing" constant="16" id="D5F-KB-JSN"/>
+                <constraint firstItem="O0F-XG-sPk" firstAttribute="leading" secondItem="pX7-2W-F9h" secondAttribute="trailing" constant="153.5" id="FIu-5G-4NM"/>
+                <constraint firstItem="Jn5-pQ-ikj" firstAttribute="leading" secondItem="SFS-Vi-fhm" secondAttribute="leading" constant="16" id="PJI-s7-BoK"/>
+                <constraint firstItem="pX7-2W-F9h" firstAttribute="leading" secondItem="oWZ-Zi-kCz" secondAttribute="trailing" constant="3" id="PMp-I3-gHJ"/>
+                <constraint firstItem="O0F-XG-sPk" firstAttribute="top" secondItem="Jn5-pQ-ikj" secondAttribute="bottom" constant="30" id="PUa-cP-Ekv"/>
+                <constraint firstItem="Jn5-pQ-ikj" firstAttribute="top" secondItem="SFS-Vi-fhm" secondAttribute="top" constant="16" id="T5i-Cd-Iz7"/>
+                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Jn5-pQ-ikj" secondAttribute="trailing" constant="16" id="peH-Pk-7RE"/>
+                <constraint firstItem="2pj-EC-V0L" firstAttribute="trailing" secondItem="O0F-XG-sPk" secondAttribute="trailing" constant="63" id="syc-xA-tK2"/>
+                <constraint firstItem="2pj-EC-V0L" firstAttribute="bottom" secondItem="O0F-XG-sPk" secondAttribute="bottom" constant="47" id="xKj-4i-HFH"/>
+                <constraint firstItem="oWZ-Zi-kCz" firstAttribute="leading" secondItem="2pj-EC-V0L" secondAttribute="leading" constant="16" id="zxM-8d-cdj"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="issueTitleLabel" destination="Jn5-pQ-ikj" id="UlA-kD-sU6"/>
+                <outlet property="username" destination="pX7-2W-F9h" id="Duo-8M-SiP"/>
+            </connections>
+            <point key="canvasLocation" x="79.710144927536234" y="-53.571428571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

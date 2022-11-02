@@ -25,6 +25,7 @@ class IssuePreviewCVCell: UICollectionViewCell {
         view.axis = .horizontal
         view.alignment = .fill
         view.distribution = .fill
+        view.spacing = 20
         return view
     }()
     
@@ -43,7 +44,14 @@ class IssuePreviewCVCell: UICollectionViewCell {
         return label
     }()
     
-    var spacerView = UIView()
+    var spacerView: UIView = {
+        let spacer = UIView()
+        // Create a view to use as a spacer which expands to fill available area
+        let width = spacer.widthAnchor.constraint(equalToConstant: 10_000)
+        width.priority = .defaultLow
+        width.isActive = true
+        return spacer
+    }()
     
     var issueStatus: UIButton = {
         let button = UIButton()
@@ -51,7 +59,7 @@ class IssuePreviewCVCell: UICollectionViewCell {
         config.cornerStyle = .capsule
         config.baseBackgroundColor = .green
         button.configuration = config
-        button.isEnabled = false
+        button.isUserInteractionEnabled = false
         return button
     }()
     
@@ -86,8 +94,7 @@ class IssuePreviewCVCell: UICollectionViewCell {
         issueUsername.text = issue.user?.login
         issueStatus.configuration?.title = issue.state
 
-       // issueStatus.configuration?.baseBackgroundColor = .green
-        
+        issueStatus.configuration?.baseBackgroundColor = .green
     }
 }
 

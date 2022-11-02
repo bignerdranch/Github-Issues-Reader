@@ -59,9 +59,6 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
     }
     
     
@@ -92,7 +89,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.init(width: view.bounds.size.width, height: 250)
+        return CGSize.init(width: collectionView.bounds.size.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right, height: 100)
     }
     
     

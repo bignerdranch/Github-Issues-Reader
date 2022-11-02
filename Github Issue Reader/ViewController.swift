@@ -132,7 +132,8 @@ class ViewController: UIViewController {
             }
             
             let layout = UICollectionViewFlowLayout()
-            
+            layout.itemSize = UICollectionViewFlowLayout.automaticSize
+
             let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
             
             issuesVC.viewModel = viewModel

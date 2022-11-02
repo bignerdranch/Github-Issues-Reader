@@ -126,9 +126,9 @@ class ViewController: UIViewController {
         viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
             print("Successfully received issues.")
             
-            for issue in self.viewModel.issues {
-                print(issue.title)
-            }
+//            for issue in self.viewModel.issues {
+//                print(issue.title)
+//            }
             
             let layout = UICollectionViewFlowLayout()
             layout.itemSize = UICollectionViewFlowLayout.automaticSize

@@ -25,13 +25,13 @@ class IssuePreviewCVCell: UICollectionViewCell {
         view.axis = .horizontal
         view.alignment = .fill
         view.distribution = .fill
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     var issueTitle: UILabel = {
         var label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
@@ -56,7 +56,7 @@ class IssuePreviewCVCell: UICollectionViewCell {
     }()
     
     override init(frame: CGRect) {
-        super .init(frame: frame)
+        super.init(frame: frame)
         contentView.addSubview(containerView)
         containerView.addArrangedSubview(issueTitle)
         containerView.addArrangedSubview(containerHView)
@@ -66,23 +66,22 @@ class IssuePreviewCVCell: UICollectionViewCell {
         containerHView.addArrangedSubview(issueStatus)
         
         let constraints = [
-                containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                containerView.topAnchor.constraint(equalTo: self.topAnchor),
-                containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-                containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                userPic.widthAnchor.constraint(equalToConstant: 20),
-                userPic.heightAnchor.constraint(equalTo: userPic.widthAnchor),
-                
-            ]
-            NSLayoutConstraint.activate(constraints)
-        
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            userPic.widthAnchor.constraint(equalToConstant: 20),
+            userPic.heightAnchor.constraint(equalTo: userPic.widthAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(issue: Issue){
+    func configure(issue: Issue) {
         issueTitle.text = issue.title
         issueUsername.text = issue.user?.login
         issueStatus.configuration?.title = issue.state

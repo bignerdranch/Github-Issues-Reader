@@ -16,9 +16,14 @@ class IssueViewModel {
     @Published var issues: [Issue] = []
     @Published var error: NetworkingManager.NetworkingError?
 
-    func fetchIssues(for organization: String, repo: String, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
-    
-         let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
+    enum State: String {
+        case open
+        case closed
+        case all
+    }
+
+    func fetchIssues(for organization: String, repo: String, state: State = .open, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
+        let url = "https://api.github.com/repos/\(organization)/\(repo)/issues?state=\(state.rawValue)"
         // Bad url for testing error logic
         //let url = "https://api.github.com/asdjfaklsdjfaldksjflkas/repos/\(organization)/\(repo)/issues"
         // networkingManager class on compile then shared property on runtime.

@@ -152,7 +152,7 @@ class ViewController: UIViewController {
         navigationController?.pushViewController(issuesVC, animated: true)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            viewModel.fetchIssues(for: organization, repo: repo) { issues in
+            viewModel.fetchIssues(for: organization, repo: repo, state: .all) { issues in
             }
         }
     }

@@ -123,7 +123,7 @@ class ViewController: UIViewController {
             return
         }
         
-        viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
+        viewModel.fetchIssues(for: organization, repo: repo, state: .all) { [self] issues in
             print("Successfully received issues.")
             
 //            for issue in self.viewModel.issues {

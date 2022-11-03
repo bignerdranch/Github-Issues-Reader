@@ -9,11 +9,17 @@ import Foundation
 
 
 class IssueViewModel {
+
+    enum State: String {
+        case open
+        case closed
+        case all
+    }
     
     var issues: [Issue] = []
     
-    func fetchIssues(for organization: String, repo: String, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
-         let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
+    func fetchIssues(for organization: String, repo: String, state: State = .open, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
+        let url = "https://api.github.com/repos/\(organization)/\(repo)/issues?state=\(state.rawValue)"
          NetworkingManager.shared.request(url, type: [Issue].self) { [weak self] response in
              DispatchQueue.main.async { [weak self] in
                  switch response {

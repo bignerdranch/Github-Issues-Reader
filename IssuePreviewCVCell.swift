@@ -90,12 +90,11 @@ class IssuePreviewCVCell: UICollectionViewCell {
     func configure(issue: Issue) {
         issueTitle.text = issue.title
         issueUsername.text = issue.user?.login
-        issueStatus.configuration?.title = issue.state
+        issueStatus.configuration?.title = issue.state.rawValue
         
         issueStatus.configuration?.baseBackgroundColor = .green
-
         
-        if issue.state == "open" {
+        if issue.state == .open {
             issueStatus.configuration?.baseBackgroundColor = .green
         } else {
             issueStatus.configuration?.baseBackgroundColor = .red

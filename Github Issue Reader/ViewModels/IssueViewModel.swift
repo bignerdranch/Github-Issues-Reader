@@ -16,10 +16,14 @@ class IssueViewModel {
          let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
          NetworkingManager.shared.request(url, type: [Issue].self) { [weak self] response in
              DispatchQueue.main.async { [weak self] in
+                 guard let self = self else { return }
                  switch response {
                  case .success(let response):
-                     self?.issues.append(contentsOf: response)
-                     completion(self?.issues)
+                     // O(n^2) but we only get 30 issues at a time so yolo
+                     for issue in response where !self.issues.contains(issue) {
+                         self.issues.append(issue)
+                     }
+                     completion(self.issues)
                  case .failure(let error):
                      print(error)
                      completion(nil)
@@ -38,17 +42,13 @@ class IssueViewModel {
 
     func sortByTitle() {
         issues.sort { first, second in
-            guard let firstTitle = first.title else { return false }
-            guard let secondTitle = second.title else { return true }
-            return firstTitle < secondTitle
+            first.title < second.title
         }
     }
     
     func sortByUser() {
         issues.sort { first, second in
-            guard let firstUser = first.user?.id else { return false}
-            guard let secondUser = second.user?.id else { return true }
-            return firstUser < secondUser
+            first.user.id < second.user.id
         }
     }
 }

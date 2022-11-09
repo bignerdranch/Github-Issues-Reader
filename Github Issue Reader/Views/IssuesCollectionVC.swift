@@ -11,6 +11,8 @@ private let reuseIdentifier = "Cell"
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var cellHeight: CGFloat = 100
+    
     func title() {
         navigationItem.title = "Issues"
     }
@@ -64,6 +66,6 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let fullWidth = collectionView.bounds.size.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
-        return CGSize(width: fullWidth, height: 100)
+        return CGSize(width: fullWidth, height: cellHeight)
     }
 }

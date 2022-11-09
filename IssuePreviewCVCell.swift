@@ -88,11 +88,11 @@ class IssuePreviewCVCell: UICollectionViewCell {
     }
     
     func configure(issue: Issue) {
-        var color: UIColor
-        
         issueTitleLabel.text = issue.title
         issueUsernameLabel.text = issue.user?.login
         issueStatusButton.configuration?.title = issue.state.rawValue
+        
+        var color: UIColor
         
         switch issue.state {
         case .open:

@@ -11,7 +11,7 @@ private let reuseIdentifier = "Cell"
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    func title(){
+    func title() {
         navigationItem.title = "Issues"
     }
     

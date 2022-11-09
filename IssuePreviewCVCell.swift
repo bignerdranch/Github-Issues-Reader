@@ -29,16 +29,16 @@ class IssuePreviewCVCell: UICollectionViewCell {
         return view
     }()
     
-    var issueTitle: UILabel = {
+    var issueTitleLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.lineBreakMode = .byTruncatingTail
         return label
     }()
     
-    let userPic = UIImageView (image: UIImage(systemName: "person.circle"))
+    let userPic = UIImageView(image: UIImage(systemName: "person.circle"))
     
-    var issueUsername: UILabel = {
+    var issueUsernameLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .caption1)
         return label
@@ -53,7 +53,7 @@ class IssuePreviewCVCell: UICollectionViewCell {
         return spacer
     }()
     
-    var issueStatus: UIButton = {
+    var issueStatusButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.cornerStyle = .capsule
@@ -65,12 +65,12 @@ class IssuePreviewCVCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(containerView)
-        containerView.addArrangedSubview(issueTitle)
+        containerView.addArrangedSubview(issueTitleLabel)
         containerView.addArrangedSubview(containerHView)
         containerHView.addArrangedSubview(userPic)
-        containerHView.addArrangedSubview(issueUsername)
+        containerHView.addArrangedSubview(issueUsernameLabel)
         containerHView.addArrangedSubview(spacerView)
-        containerHView.addArrangedSubview(issueStatus)
+        containerHView.addArrangedSubview(issueStatusButton)
         
         let constraints = [
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -88,17 +88,20 @@ class IssuePreviewCVCell: UICollectionViewCell {
     }
     
     func configure(issue: Issue) {
-        issueTitle.text = issue.title
-        issueUsername.text = issue.user?.login
-        issueStatus.configuration?.title = issue.state.rawValue
+        var color: UIColor
         
-        issueStatus.configuration?.baseBackgroundColor = .green
+        issueTitleLabel.text = issue.title
+        issueUsernameLabel.text = issue.user?.login
+        issueStatusButton.configuration?.title = issue.state.rawValue
         
-        if issue.state == .open {
-            issueStatus.configuration?.baseBackgroundColor = .green
-        } else {
-            issueStatus.configuration?.baseBackgroundColor = .red
+        switch issue.state {
+        case .open:
+            color = .green
+        case .closed:
+            color = .red
         }
+        
+        issueStatusButton.configuration?.baseBackgroundColor = color
     }
 }
 

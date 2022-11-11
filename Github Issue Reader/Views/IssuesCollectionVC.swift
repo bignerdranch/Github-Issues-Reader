@@ -11,32 +11,28 @@ private let reuseIdentifier = "Cell"
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var cellHeight: CGFloat = 100
+
     var viewModel: IssueViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        print(viewModel?.issues.count)
+        print(viewModel?.issues.count ?? 0)
         self.collectionView.register(IssuePreviewCVCell.self, forCellWithReuseIdentifier: IssuePreviewCVCell.reuseID)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    
     
     func configureViewController() {
+        navigationController?.navigationBar.isHidden = false
         view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
-        if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        }
+        navigationItem.title = "Issues"
+        navigationController?.navigationBar.prefersLargeTitles = true        
     }
-    
     
     func configureCollectionView() {
         collectionView.backgroundColor = .systemGray2
@@ -64,9 +60,9 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         return 1
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize.init(width: view.frame.size.width, height: 250)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let fullWidth = collectionView.bounds.size.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
+        return CGSize(width: fullWidth, height: cellHeight)
+    }
     
-    // collectionView data source protocols - common pattern
 }

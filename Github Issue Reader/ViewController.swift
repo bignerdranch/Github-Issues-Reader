@@ -126,17 +126,13 @@ class ViewController: UIViewController {
         viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
             print("Successfully received issues.")
             
-            for issue in self.viewModel.issues {
-                print(issue.title)
-            }
-            
             let layout = UICollectionViewFlowLayout()
             
             let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
             
             issuesVC.viewModel = viewModel
             print("Presenting ViewController")
-            present(issuesVC, animated: true)
+            navigationController?.pushViewController(issuesVC, animated: true)
         }
     }
     

@@ -10,8 +10,13 @@ import Foundation
 struct Issue: Codable, Equatable {
     let id: Int
     let title: String?
-    let state: String?
+    let state: State
     let user: User?
     let body: String?
     let createdAt: String?
+    
+    enum State: String, Codable, Equatable {
+        case open
+        case closed
+    }
 }

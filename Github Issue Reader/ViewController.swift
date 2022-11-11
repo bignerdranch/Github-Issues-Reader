@@ -129,11 +129,12 @@ class ViewController: UIViewController {
             let layout = UICollectionViewFlowLayout()
             layout.itemSize = UICollectionViewFlowLayout.automaticSize
             
+            
             let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
             
             issuesVC.viewModel = viewModel
             print("Presenting ViewController")
-            present(issuesVC, animated: true)
+            navigationController?.pushViewController(issuesVC, animated: true)
         }
     }
     

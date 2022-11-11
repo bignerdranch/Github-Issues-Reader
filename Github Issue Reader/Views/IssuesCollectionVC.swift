@@ -12,18 +12,14 @@ private let reuseIdentifier = "Cell"
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var cellHeight: CGFloat = 100
-    
-    func title() {
-        navigationItem.title = "Issues"
-    }
-    
+
     var viewModel: IssueViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-        print(viewModel?.issues.count)
+        print(viewModel?.issues.count ?? 0)
         self.collectionView.register(IssuePreviewCVCell.self, forCellWithReuseIdentifier: IssuePreviewCVCell.reuseID)
     }
     
@@ -33,10 +29,11 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func configureViewController() {
+        navigationController?.navigationBar.isHidden = false
         view.backgroundColor = .systemBackground
+        navigationItem.title = "Issues"
         navigationController?.navigationBar.prefersLargeTitles = true        
     }
-    
     
     func configureCollectionView() {
         collectionView.backgroundColor = .systemGray2
@@ -68,4 +65,5 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         let fullWidth = collectionView.bounds.size.width - collectionView.layoutMargins.left - collectionView.layoutMargins.right
         return CGSize(width: fullWidth, height: cellHeight)
     }
+    
 }

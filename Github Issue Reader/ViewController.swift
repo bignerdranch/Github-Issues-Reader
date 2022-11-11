@@ -127,8 +127,6 @@ class ViewController: UIViewController {
             print("Successfully received issues.")
             
             let layout = UICollectionViewFlowLayout()
-            layout.itemSize = UICollectionViewFlowLayout.automaticSize
-            
             
             let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
             

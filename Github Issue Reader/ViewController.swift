@@ -87,6 +87,7 @@ class ViewController: UIViewController {
         repoTextfield.text = "Swift"
         
         setupUI()
+        activateIndicator()
     }
     
     func setupUI() {
@@ -123,17 +124,34 @@ class ViewController: UIViewController {
             return
         }
         
-        viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
-            print("Successfully received issues.")
+        activityIndicator.startAnimating()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             
-            let layout = UICollectionViewFlowLayout()
-            
-            let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
-            
-            issuesVC.viewModel = viewModel
-            print("Presenting ViewController")
-            navigationController?.pushViewController(issuesVC, animated: true)
+            self.viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
+                print("Successfully received issues.")
+                
+                let layout = UICollectionViewFlowLayout()
+                
+                let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
+                
+                issuesVC.viewModel = viewModel
+                print("Presenting ViewController")
+                navigationController?.pushViewController(issuesVC, animated: true)
+                activityIndicator.stopAnimating()
+            }
         }
+    }
+    
+    let activityIndicator = UIActivityIndicatorView(style: .large)
+    
+    func activateIndicator() {
+        let container = UIView()
+        container.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        activityIndicator.center = self.view.center
+        
+        container.addSubview(activityIndicator)
+        self.view.addSubview(container)
     }
     
 }

@@ -19,9 +19,12 @@ struct Issue: Codable, Hashable {
     enum State: String, Codable, Hashable {
         case open
         case closed
+
+        var localizedTitle: String {
+            rawValue.capitalized
+        }
     }
 }
-
 
 extension UIColor {
     static func from(state: Issue.State) -> UIColor {

@@ -18,7 +18,7 @@ struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
     init(issue: Issue) {
         issueTitle = issue.title
         username = issue.user.login
-        status = issue.state.rawValue
+        status = issue.state.localizedTitle
         statusColor = .from(state: issue.state)
     }
 

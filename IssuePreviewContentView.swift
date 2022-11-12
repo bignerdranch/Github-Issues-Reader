@@ -1,5 +1,5 @@
 //
-//  IssuePreviewCVCell.swift
+//  IssuePreviewContentView.swift
 //  Github Issue Reader
 //
 //  Created by Alivia Fairchild on 10/14/22.
@@ -164,26 +164,3 @@ class IssuePreviewContentView: UIView, UIContentView {
         return configuration is IssuePreviewContentConfiguration
     }
 }
-
-//class IssuePreviewCVCell: UICollectionViewListCell {
-//
-//    func configure(issue: Issue) {
-//        issueTitle.text = issue.title
-//        issueUsername.text = issue.user.login
-//        issueStatus.configuration?.title = issue.state.rawValue
-//        issueStatus.configuration?.baseBackgroundColor = .from(state: issue.state)
-//
-//
-//        accessories = [.disclosureIndicator()]
-//        containerView.directionalLayoutMargins = .init(top: 10, leading: 100, bottom: 10, trailing: 20)
-//        containerView.preservesSuperviewLayoutMargins = false
-
-//        contentView.directionalLayoutMargins = .init(top: 10, leading: 100, bottom: 10, trailing: 20)
-
-//        directionalLayoutMargins = .init(top: 10, leading: 100, bottom: 10, trailing: 20)
-//
-//        var config = defaultContentConfiguration()
-//        config.directionalLayoutMargins = .init(top: 10, leading: 100, bottom: 10, trailing: 20)
-//        contentConfiguration = config
-//    }
-//}

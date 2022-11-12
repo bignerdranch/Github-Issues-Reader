@@ -8,9 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let viewModel = IssueViewModel()
-    
+
     var containerView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -122,7 +120,8 @@ class ViewController: UIViewController {
         guard let organization = organization, let repo = repo else {
             return
         }
-        
+
+        let viewModel = IssueViewModel()
         viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
             print("Successfully received issues.")
 

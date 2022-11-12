@@ -81,7 +81,6 @@
 		FFB3D63328BE8B6C005DB032 = {
 			isa = PBXGroup;
 			children = (
-				FD52A5A928F9F6D100819D23 /* IssuePreviewContentView.swift */,
 				FFB3D63E28BE8B6C005DB032 /* Github Issue Reader */,
 				B6AD210328FF4E18009B3345 /* GithubIssueReaderTests */,
 				FFB3D63D28BE8B6C005DB032 /* Products */,
@@ -135,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				FD157EF328C0032000A05E12 /* IssuesCollectionVC.swift */,
+				FD52A5A928F9F6D100819D23 /* IssuePreviewContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

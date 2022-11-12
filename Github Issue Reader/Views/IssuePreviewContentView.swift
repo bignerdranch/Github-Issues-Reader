@@ -109,7 +109,6 @@ class IssuePreviewContentView: UIView, UIContentView {
     private var issueTitleLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
-        label.lineBreakMode = .byTruncatingTail
         label.numberOfLines = 0
         label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         return label

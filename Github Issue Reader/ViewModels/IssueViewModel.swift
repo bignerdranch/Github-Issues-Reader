@@ -19,10 +19,7 @@ class IssueViewModel {
                  guard let self = self else { return }
                  switch response {
                  case .success(let response):
-                     // O(n^2) but we only get 30 issues at a time so yolo
-                     for issue in response where !self.issues.contains(issue) {
-                         self.issues.append(issue)
-                     }
+                     self.issues.append(contentsOf: response)
                      completion(self.issues)
                  case .failure(let error):
                      print(error)

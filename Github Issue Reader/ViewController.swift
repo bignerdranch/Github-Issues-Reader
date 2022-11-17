@@ -8,9 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let viewModel = IssueViewModel()
-    
+
     var containerView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -127,15 +125,11 @@ class ViewController: UIViewController {
         activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             
-            self.viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
+            let viewModel = IssueViewModel()
+            viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
                 print("Successfully received issues.")
                 
-                let layout = UICollectionViewFlowLayout()
-                
-                let issuesVC = IssuesCollectionVC(collectionViewLayout: layout)
-                
-                issuesVC.viewModel = viewModel
-                print("Presenting ViewController")
+                let issuesVC = IssuesCollectionVC(viewModel: viewModel)                
                 navigationController?.pushViewController(issuesVC, animated: true)
                 activityIndicator.stopAnimating()
             }

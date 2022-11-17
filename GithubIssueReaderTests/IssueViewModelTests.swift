@@ -23,7 +23,7 @@ final class IssueViewModelTests: XCTestCase {
         {
             "id": 3,
             "title": "Hello",
-            "state": "GA",
+            "state": "open",
             "user": { "id": 123, "login": "Kevin", "avatarURL": null },
             "body": "of the Randrups",
             "createdAt": "now"
@@ -32,13 +32,13 @@ final class IssueViewModelTests: XCTestCase {
         let decodedIssue = try JSONDecoder().decode(Issue.self, from: data)
 
         XCTAssertEqual(decodedIssue.id, 3)
-        XCTAssertEqual(decodedIssue.user?.id, 123)
-        XCTAssertNil(decodedIssue.user?.avatarURL)
+        XCTAssertEqual(decodedIssue.user.id, 123)
+        XCTAssertNil(decodedIssue.user.avatarURL)
 
         let expectedIssue = Issue(
             id: 3,
             title: "Hello",
-            state: "GA",
+            state: .open,
             user: .init(id: 123, login: "Kevin", avatarURL: nil),
             body: "of the Randrups",
             createdAt: "now"
@@ -82,10 +82,10 @@ final class IssueViewModelTests: XCTestCase {
     }
 
     func testIssueViewModel_doubleFetch() {
-        var firstFetch = expectation(description: "first issue fetched")
-        var secondFetch = expectation(description: "second issue fetched")
+        let firstFetch = expectation(description: "first issue fetched")
+        let secondFetch = expectation(description: "second issue fetched")
         
-        var issueViewModel = IssueViewModel()
+        let issueViewModel = IssueViewModel()
         
         issueViewModel.fetchIssues(for: "apple", repo: "swift") { downloadedSwiftIssues in
             XCTAssertNotNil(downloadedSwiftIssues)
@@ -111,7 +111,7 @@ final class IssueViewModelTests: XCTestCase {
         let issueVia = Issue(
             id: 3,
             title: "Via's Issue",
-            state: "",
+            state: .closed,
             user: .init(id: 123, login: "Via", avatarURL: nil),
             body: "of the Fairchilds",
             createdAt: "now"
@@ -119,7 +119,7 @@ final class IssueViewModelTests: XCTestCase {
         let issueKevin = Issue(
             id: 2,
             title: "Kevin's Issue",
-            state: "GA",
+            state: .open,
             user: .init(id: 123, login: "Kevin", avatarURL: nil),
             body: "of the Randrups",
             createdAt: "now"
@@ -136,14 +136,14 @@ final class IssueViewModelTests: XCTestCase {
     
     
     func testIssueViewModel_sortingUser() {
-        var firstFetch = expectation(description: "first issue fetched")
+        let firstFetch = expectation(description: "first issue fetched")
         
         // giveme
         let issueViewModel = IssueViewModel()
         let issueVia = Issue(
             id: 3,
             title: "Via's Issue",
-            state: "",
+            state: .closed,
             user: .init(id: 123, login: "Via", avatarURL: nil),
             body: "of the Fairchilds",
             createdAt: "now"
@@ -151,7 +151,7 @@ final class IssueViewModelTests: XCTestCase {
         let issueKevin = Issue(
             id: 2,
             title: "Kevin's Issue",
-            state: "GA",
+            state: .open,
             user: .init(id: 927, login: "Kevin", avatarURL: nil),
             body: "of the Randrups",
             createdAt: "now"

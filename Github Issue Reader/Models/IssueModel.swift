@@ -6,17 +6,33 @@
 //
 
 import Foundation
+import UIKit
 
-struct Issue: Codable, Equatable {
+struct Issue: Codable, Hashable {
     let id: Int
-    let title: String?
+    let title: String
     let state: State
-    let user: User?
+    let user: User
     let body: String?
-    let createdAt: String?
-    
-    enum State: String, Codable, Equatable {
+    let createdAt: String
+
+    enum State: String, Codable, Hashable {
         case open
         case closed
+
+        var localizedTitle: String {
+            rawValue.capitalized
+        }
+    }
+}
+
+extension UIColor {
+    static func from(state: Issue.State) -> UIColor {
+        switch state {
+        case .open:
+            return .green
+        case .closed:
+            return .red
+        }
     }
 }

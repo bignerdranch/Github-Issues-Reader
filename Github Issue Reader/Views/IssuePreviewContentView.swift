@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// Ignore content configuration - 2 hours
+
 struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
 
     let issueTitle: String

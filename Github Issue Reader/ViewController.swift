@@ -7,6 +7,7 @@
 
 import UIKit
 
+// 2 hours
 class ViewController: UIViewController {
 
     var containerView: UIStackView = {
@@ -109,10 +110,9 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-
         ])
     }
-    
+
     @objc func fetchIssues() {
         
         let organization = orgTextfield.text

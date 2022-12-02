@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 2 mins
 struct User: Codable, Hashable {
     let id: Int
     let login: String

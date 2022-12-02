@@ -7,7 +7,9 @@
 
 import Foundation
 
-
+// 2 hours fetch, 6 hours async await
+// 4 hours sorting - understand closures
+// 2 days - sorting
 class IssueViewModel {
     
     var issues: [Issue] = []
@@ -38,6 +40,7 @@ class IssueViewModel {
     }
 
     func sortByTitle() {
+        // issues = ["alpha", "bravo", "zeta", "oscar", "charlie"]
         issues.sort { first, second in
             first.title < second.title
         }

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// 1 hour
 struct Issue: Codable, Hashable {
     let id: Int
     let title: String

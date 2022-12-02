@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 1 day
 final class NetworkingManager {
     
     static let shared = NetworkingManager()

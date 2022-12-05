@@ -18,6 +18,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     }
 
     private let viewModel: IssueViewModel
+    private let mainSection = Section(section: 0)
 
     init(viewModel: IssueViewModel) {
         let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
@@ -37,10 +38,10 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
 
         // Load initial data
         var snapshot = dataSource.snapshot()
-        let section = Section(section: 0)
-        snapshot.appendSections([section])
-        snapshot.appendItems([.loading], toSection: section)
-        snapshot.appendItems(viewModel.issues.map({ .issue($0) }), toSection: section)
+
+        snapshot.appendSections([mainSection])
+        snapshot.appendItems([.loading], toSection: mainSection)
+
         dataSource.apply(snapshot)
     }
 
@@ -52,6 +53,14 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         view.backgroundColor = .systemBackground
         navigationItem.title = "Issues"
         navigationController?.navigationBar.prefersLargeTitles = true
+    }
+
+    /// Issues have loaded into the `IssuesViewModel`, update the UI with the new data
+    func reload() {
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems(viewModel.issues.map { .issue($0) }, toSection: mainSection)
+        dataSource.apply(snapshot)
+        print("Displaying \(viewModel.issues.count) issues")
     }
 
     // MARK: UICollectionView

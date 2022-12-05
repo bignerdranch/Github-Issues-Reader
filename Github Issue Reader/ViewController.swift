@@ -122,11 +122,14 @@ class ViewController: UIViewController {
         }
 
         let viewModel = IssueViewModel()
-        viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
-            print("Successfully received issues.")
+        let issuesVC = IssuesCollectionVC(viewModel: viewModel)
+        navigationController?.pushViewController(issuesVC, animated: true)
 
-            let issuesVC = IssuesCollectionVC(viewModel: viewModel)
-            navigationController?.pushViewController(issuesVC, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
+                print("Loaded \(issues?.count ?? 0) issues")
+                issuesVC.reload()
+            }
         }
     }
 }

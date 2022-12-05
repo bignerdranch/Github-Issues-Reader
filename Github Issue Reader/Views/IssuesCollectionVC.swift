@@ -12,6 +12,10 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     private struct Section: Hashable {
         let section: Int
     }
+    private enum Row: Hashable {
+        case issue(Issue)
+        case loading
+    }
 
     private let viewModel: IssueViewModel
 
@@ -35,7 +39,8 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         var snapshot = dataSource.snapshot()
         let section = Section(section: 0)
         snapshot.appendSections([section])
-        snapshot.appendItems(viewModel.issues, toSection: section)
+        snapshot.appendItems([.loading], toSection: section)
+        snapshot.appendItems(viewModel.issues.map({ .issue($0) }), toSection: section)
         dataSource.apply(snapshot)
     }
 
@@ -51,18 +56,24 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
 
     // MARK: UICollectionView
 
-    private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Issue> = {
-        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, Issue> { cell, indexPath, itemIdentifier in
-            cell.contentConfiguration = IssuePreviewContentConfiguration(issue: itemIdentifier)
+    private func configureCollectionView() {
+        collectionView.backgroundColor = .systemGray2
+        collectionView.register(IssueLoadingCell.self, forCellWithReuseIdentifier: IssueLoadingCell.identifier)
+    }
+
+    private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Row> = {
+        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, Issue> { cell, indexPath, issue in
+            cell.contentConfiguration = IssuePreviewContentConfiguration(issue: issue)
         }
-        return .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
-            let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: itemIdentifier)
-            cell.accessories = [.disclosureIndicator()]
-            return cell
+        return .init(collectionView: collectionView) { collectionView, indexPath, row in
+            switch row {
+            case .issue(let issue):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: issue)
+                cell.accessories = [.disclosureIndicator()]
+                return cell
+            case .loading:
+                return collectionView.dequeueReusableCell(withReuseIdentifier: IssueLoadingCell.identifier, for: indexPath)
+            }
         }
     }()
-
-    func configureCollectionView() {
-        collectionView.backgroundColor = .systemGray2
-    }
 }

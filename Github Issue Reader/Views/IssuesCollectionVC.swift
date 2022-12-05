@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
@@ -19,6 +20,7 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
 
     private let viewModel: IssueViewModel
     private let mainSection = Section(section: 0)
+    private var subscriptions = Set<AnyCancellable>()
 
     init(viewModel: IssueViewModel) {
         let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
@@ -43,6 +45,11 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         snapshot.appendItems([.loading], toSection: mainSection)
 
         dataSource.apply(snapshot)
+
+        /// Issues have loaded into the `IssuesViewModel`, update the UI with the new data
+        viewModel.$issues.dropFirst().sink { issues in
+            self.reload(issues: issues)
+        }.store(in: &subscriptions)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -55,12 +62,11 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
-    /// Issues have loaded into the `IssuesViewModel`, update the UI with the new data
-    func reload() {
+    private func reload(issues: [Issue]) {
         var snapshot = dataSource.snapshot()
-        snapshot.appendItems(viewModel.issues.map { .issue($0) }, toSection: mainSection)
+        snapshot.appendItems(issues.map { .issue($0) }, toSection: mainSection)
         dataSource.apply(snapshot)
-        print("Displaying \(viewModel.issues.count) issues")
+        print("Displaying \(issues.count) issues")
     }
 
     // MARK: UICollectionView

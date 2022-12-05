@@ -7,11 +7,10 @@
 
 import Foundation
 
-
 class IssueViewModel {
-    
-    var issues: [Issue] = []
-    
+
+    @Published var issues: [Issue] = []
+
     func fetchIssues(for organization: String, repo: String, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
          let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
          NetworkingManager.shared.request(url, type: [Issue].self) { [weak self] response in

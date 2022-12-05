@@ -126,9 +126,7 @@ class ViewController: UIViewController {
         navigationController?.pushViewController(issuesVC, animated: true)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
-                print("Loaded \(issues?.count ?? 0) issues")
-                issuesVC.reload()
+            viewModel.fetchIssues(for: organization, repo: repo) { issues in
             }
         }
     }

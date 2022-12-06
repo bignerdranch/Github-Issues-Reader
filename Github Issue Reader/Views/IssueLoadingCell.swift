@@ -20,7 +20,6 @@ class IssueLoadingCell: UICollectionViewCell {
         activityIndicator.startAnimating()
 
         contentView.addSubview(activityIndicator)
-        contentView.backgroundColor = .purple
 
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: activityIndicator.leadingAnchor),

@@ -80,6 +80,8 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
             if let error = error {
                 snapshot.appendItems([.error(ErrorDetails(error))], toSection: self.mainSection)
             } else if issues.isEmpty {
+                // Technically we could query a repo with no issues and result in infinite loading indicator,
+                // but what are the chances of that...
                 print("Displaying loading indicator")
                 snapshot.appendItems([.loading], toSection: self.mainSection)
             } else {

@@ -10,6 +10,7 @@ import UIKit
 // 2 hours
 class ViewController: UIViewController {
 
+    // property creating a stackView (like a list) to organize the UI for the entire VC
     var containerView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -19,6 +20,7 @@ class ViewController: UIViewController {
         return view
     }()
     
+    // text label
     var gitLabel: UILabel = {
         let label = UILabel()
         label.text = "GitHub Issue Viewer"
@@ -26,6 +28,7 @@ class ViewController: UIViewController {
         return label
     }()
     
+    // text label
     var gitSubLabel: UILabel = {
         let label = UILabel()
         label.text = "View issues in a repository:"
@@ -34,6 +37,7 @@ class ViewController: UIViewController {
         return label
     }()
     
+    // text label
     var orgLabel: UILabel = {
         let label = UILabel()
         label.text = "Organization"
@@ -41,6 +45,7 @@ class ViewController: UIViewController {
         return label
     }()
     
+    // text label
     var repoLabel: UILabel = {
         let label = UILabel()
         label.text = "Repository"
@@ -48,6 +53,7 @@ class ViewController: UIViewController {
         return label
     }()
     
+    // text input (User interactive)
     var orgTextfield: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "Enter an organization"
@@ -56,6 +62,7 @@ class ViewController: UIViewController {
         return textfield
     }()
     
+    // text input (User interactive)
     var repoTextfield: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "Enter a repository"
@@ -64,6 +71,7 @@ class ViewController: UIViewController {
         return textfield
     }()
     
+    // a button (User interactive)
     lazy var submitButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
@@ -72,10 +80,12 @@ class ViewController: UIViewController {
         config.baseBackgroundColor = .black
         config.cornerStyle = .capsule
         button.configuration = config
+        // This is telling the button what to do once it's been tapped. It's going to run the fetchIssues function
         button.addTarget(self, action: #selector(fetchIssues), for: .touchUpInside)
         return button
     }()
 
+    // this function is essentially running all the other functions/ui to present in our VC
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -89,11 +99,15 @@ class ViewController: UIViewController {
         activateIndicator()
     }
     
+    // this is a catch all func to handle constraints etc.
     func setupUI() {
-        
+        // simple declaration for a reusable value. Streamlined here for code readability and easy debugging
         let standardPadding: CGFloat = 20
         
-        submitButton.titleLabel?.text = "Submit"
+        // I actually can't tell why this line of code is here or where it's relevant so I commented it out. The title of the submit button is declared up in the original property.
+       // submitButton.titleLabel?.text = "Submit"
+        
+        //connecting all the UI to the containerView stack (in order of appearance, with some spacing added)
         containerView.addArrangedSubview(gitLabel)
         containerView.addArrangedSubview(gitSubLabel)
         containerView.setCustomSpacing(standardPadding, after: gitSubLabel)

@@ -26,7 +26,7 @@ struct Issue: Codable, Hashable {
         // Is the issue closed or open? That's what we are asking the state to represent.
         case open
         case closed
-        // wtf
+        // wtf --- it's used in IssuePreviewContentView. look into why the hell it exists. 
         var localizedTitle: String {
             rawValue.capitalized
         }

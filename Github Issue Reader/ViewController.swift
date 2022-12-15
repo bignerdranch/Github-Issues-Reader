@@ -118,7 +118,7 @@ class ViewController: UIViewController {
         containerView.setCustomSpacing(standardPadding, after: repoTextfield)
         containerView.addArrangedSubview(submitButton)
         
-        // adding all the containerViews from above to the VC 
+        // adding all the containerViews from above to the VC
         view.addSubview(containerView)
         
         // pinning it to the view so it doesn't float around and explode

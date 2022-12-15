@@ -35,8 +35,11 @@ struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
     }
 }
 
+// this class is going to build out a view and the content within it.
 class IssuePreviewContentView: UIView, UIContentView {
-
+// * all things marked "private" are so that they will only show on this class and not be mutable outside of this declaration.
+    
+    // hard coding the sizing we want for the UI so if there is a problem we can easily adjust it in one spot vs having to debug a whole chain of events.
     private struct Constants {
         static let pictureSize: CGFloat = 20
         static let verticalPadding: CGFloat = 10
@@ -45,23 +48,29 @@ class IssuePreviewContentView: UIView, UIContentView {
 
     // MARK: Initialization
 
+    // we're force unwrapping the struct from above (we're CONFIDENT it will return a value because we hardcoded it to up above)
     private var contentConfiguration: IssuePreviewContentConfiguration!
 
+    // are we simply telling content configuration to conform to everything in the IssuePreviewContentConfiguration struct and making it a view?
     init(configuration: IssuePreviewContentConfiguration) {
         super.init(frame: .zero)
         self.contentConfiguration = configuration
         setupViews()
     }
-
+    
+    // UI Configuration
     private func setupViews() {
+        // creating a subview to pin all the UI into it
         addSubview(containerView)
+        // all the data being added into the empty container view
         containerView.addArrangedSubview(issueTitleLabel)
         containerView.addArrangedSubview(containerHView)
         containerHView.addArrangedSubview(userPic)
         containerHView.addArrangedSubview(issueUsernameLabel)
         containerHView.addArrangedSubview(spacerView)
         containerHView.addArrangedSubview(issueStatusButton)
-
+        
+        // declaring the margins to use them on the containerView.
         directionalLayoutMargins = .init(
             top: Constants.verticalPadding,
             leading: Constants.horizontalPadding,
@@ -69,10 +78,11 @@ class IssuePreviewContentView: UIView, UIContentView {
             trailing: Constants.horizontalPadding
         )
         containerHView.directionalLayoutMargins.top = 10
+        // no matter what the container horizontal containers will abide by the parent class margins
         containerHView.preservesSuperviewLayoutMargins = true
-
+        // because jesus said so
         containerView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let constraints = [
             containerView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             containerView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
@@ -84,13 +94,15 @@ class IssuePreviewContentView: UIView, UIContentView {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-
+    
+    // what?
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Private views
 
+    // make a UIView that will hold all the subViews (used in above constraints)
     private var containerView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -98,7 +110,8 @@ class IssuePreviewContentView: UIView, UIContentView {
         view.distribution = .fillProportionally
         return view
     }()
-
+    
+    // view designed to horizontally hold data
     private var containerHView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
@@ -107,23 +120,28 @@ class IssuePreviewContentView: UIView, UIContentView {
         view.spacing = 20
         return view
     }()
-
+    // this property is designing the UI of how the title of the issue is going to be displayed.
     private var issueTitleLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
+        // setting this at 0 this is going to help the text not cut off so it can use as many lines as necessary. Hard coding it to any other number will ensure it only will stay within those parameters.
         label.numberOfLines = 0
+        // this is setting the importance of the the text since it can be pushed around to make space for more UI. We're telling it it's high priority so it should be one of the last things compromised.
         label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         return label
     }()
 
+    // a cute lil image to put next to the username
     private let userPic = UIImageView(image: UIImage(systemName: "person.circle"))
-
+    
+    // setting up the UI for how the username is going to be displayed.
     private var issueUsernameLabel: UILabel = {
         var label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .caption1)
         return label
     }()
-
+    
+    // this is literally just creating a place holder UIView to hold space between displays
     private var spacerView: UIView = {
         let spacer = UIView()
         // Create a view to use as a spacer which expands to fill available area
@@ -132,7 +150,8 @@ class IssuePreviewContentView: UIView, UIContentView {
         width.isActive = true
         return spacer
     }()
-
+    
+    // this is using a button for easy UI but it's actually disabled since theres no use for the action.
     private var issueStatusButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
@@ -144,7 +163,8 @@ class IssuePreviewContentView: UIView, UIContentView {
 
 
     // MARK: UIContentView
-
+    
+    // this is a huge property bringing in all the
     var configuration: UIContentConfiguration {
         get {
             contentConfiguration

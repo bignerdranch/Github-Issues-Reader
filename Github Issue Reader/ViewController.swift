@@ -122,6 +122,7 @@ class ViewController: UIViewController {
         view.addSubview(containerView)
         
         // pinning it to the view so it doesn't float around and explode
+        // Kevin - what's the downside of this approach
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
@@ -143,15 +144,20 @@ class ViewController: UIViewController {
         activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             // pulling in the IssueViewModel into this file to manipulate data within it.
+            // Creating an instance of IssueViewModel, not `pulling`
             let viewModel = IssueViewModel()
             // pulling the fetchIssues from the VM
+            // Kevin - "pulling" isn't what goes on here. `viewModel.issues` would be pulling them.
             // making the repo and organization fill in for the conditionals on the fetchIssues func from the VM
+            // Kevin - paremters which are required, not conditionals
             viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
                 print("Successfully received issues.")
                 
                 // pulling in the fileIssuesCollectionVC and filling in the conditional of the VM (IssueViewModel)
+                // Kevin - "pulling" again + `IssueViewModel` isn't conditional
                 let issuesVC = IssuesCollectionVC(viewModel: viewModel)
                 // assigning it to be the next view in the chain of events in the navController and animate the presentation.
+                // Kevin - s/chain of events/chain of screens
                 navigationController?.pushViewController(issuesVC, animated: true)
                 // once the new viewController has been pushed through after the networking call make the activity loading stop showing.
                 activityIndicator.stopAnimating()
@@ -166,14 +172,21 @@ class ViewController: UIViewController {
         let container = UIView()
         // giving the view space guidelines to work within
         container.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        
+
         // slap that activity thing in the center of itself
         activityIndicator.center = self.view.center
-        
+
         // put the activity UI into the empty UIView
         container.addSubview(activityIndicator)
         // adding the container to the view of the ViewController
         self.view.addSubview(container)
+
+        // Kevin - the empty UIView container is actually completely redundant here.
+        // It has no size, no content and no layout constraints
+        // The following code would operate exactly the same:
+        
+        // activityIndicator.center = self.view.center
+        // self.view.addSubview(activityIndicator)
     }
     
 }

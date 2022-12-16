@@ -38,6 +38,7 @@ struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
 // this class is going to build out a view and the content within it.
 class IssuePreviewContentView: UIView, UIContentView {
 // * all things marked "private" are so that they will only show on this class and not be mutable outside of this declaration.
+    // Kevin - `let` makes the varaibles immutable. A `private var` can still be mutated inside `private`
     
     // hard coding the sizing we want for the UI so if there is a problem we can easily adjust it in one spot vs having to debug a whole chain of events.
     private struct Constants {
@@ -49,9 +50,11 @@ class IssuePreviewContentView: UIView, UIContentView {
     // MARK: Initialization
 
     // we're force unwrapping the struct from above (we're CONFIDENT it will return a value because we hardcoded it to up above)
+    // Kevin - this struct is described above, but it comes from the initializer below
     private var contentConfiguration: IssuePreviewContentConfiguration!
 
     // are we simply telling content configuration to conform to everything in the IssuePreviewContentConfiguration struct and making it a view?
+    // Kevin - we initialize the UIView, then store the instance of `IssuePreviewContentConfiguration` that we were given, then setup views
     init(configuration: IssuePreviewContentConfiguration) {
         super.init(frame: .zero)
         self.contentConfiguration = configuration
@@ -96,6 +99,9 @@ class IssuePreviewContentView: UIView, UIContentView {
     }
     
     // what?
+    // Kevin - UIView is required to support 2 initializers. Because IssuePreviewContentView is a subclass, it also needs to support those 2 initializers.
+    // `init?(coder: NSCoder)` supports storyboard initialization which we aren't supporting in this class.
+    // That's why we `fatalError`
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -146,6 +152,7 @@ class IssuePreviewContentView: UIView, UIContentView {
         let spacer = UIView()
         // Create a view to use as a spacer which expands to fill available area
         let width = spacer.widthAnchor.constraint(equalToConstant: 10_000)
+        // Kevin - important to be low priority so that it's the first item to be resized for content
         width.priority = .defaultLow
         width.isActive = true
         return spacer

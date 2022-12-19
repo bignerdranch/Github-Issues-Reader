@@ -21,21 +21,29 @@ struct Issue: Codable, Hashable {
     let user: User
     let body: String?
     let createdAt: String
-    //
+    
     enum State: String, Codable, Hashable {
         // Is the issue closed or open? That's what we are asking the state to represent.
         case open
         case closed
-        // wtf --- it's used in IssuePreviewContentView. look into why the hell it exists. 
+        //
         var localizedTitle: String {
-            rawValue.capitalized
+             rawValue.capitalized
+//            switch self {
+//            case .open:
+//                return "Open"
+//            case .closed:
+//                return "Closed"
+//            }
         }
     }
 }
 
 // this extension is telling the state cases to be assigned a specific color.
 extension UIColor {
-    // static keeps the function only accessible to this file. if Issue gets called elsewhere in the project this function will not be available to modify.
+    // INACCURATE private keeps the function only accessible to this file. if Issue gets called elsewhere in the project this function will not be available to modify.
+    
+    // static means this func is a part of uicolor -- look more into this. 
     static func from(state: Issue.State) -> UIColor {
         // when the state is case - return -
         switch state {

@@ -16,6 +16,10 @@ class IssueViewModel {
     
     func fetchIssues(for organization: String, repo: String, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
          let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
+        // networkingManager class on compile then shared property on runtime.
+        // due to the static let of the shared property in the NetworkManager file we do NOT have to create an instance in this class to call the func and other things. i.e.
+        // var nm = networkingM()
+        // nm.request
          NetworkingManager.shared.request(url, type: [Issue].self) { [weak self] response in
              DispatchQueue.main.async { [weak self] in
                  guard let self = self else { return }

@@ -51,29 +51,70 @@ final class NetworkingManager {
         // handler - in a parameters, "under the rock" using the trailing closure syntax which is going to "handle" the information once it's needed. It's not until URLSession finishes with all it's work that we pull it out from under the rock with the handler to manage the return of data/information.
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
             
+            // if the URLSession has an Error return then the error will specifically give back a completion handler with a failure on the NetworkingError enum returning the specific case of unknown error code
+            // .failure is a case on Result - how are we accessing that enum? Is that what our completion handler is doing for us on line 35? How do we know we need to wrap the NetworkingError enum within that? I would never have thought to wrap it! (That's what we're doing here, right?)
+            // *must return the specific Result type - aka error/failure
+            // MarkD would have used a guard let here- why use an if let? There's no response for data here.
+            // must be called once and only once- multiple bad, zero bad
+            // general "do we get something back?" if yes, we passed this test and can move on to the more specific criteria below
             if let error = error {
                 completion(.failure(NetworkingError.unknown(error: error)))
             }
             
             // Check for a success response code
-            guard let response = response as? HTTPURLResponse, (200...300) ~= response.statusCode else {
+            // why is this constant guarded? - the response parameter type(?) is optional. struggling to understand how this code knows without it being explicitly declared that ` response = URLResponse? `
+            // guard let - "is designed to exit the current function, loop, or condition if the check fails, so any values you unwrap using it will stay around after the check." - Paul Hudson
+            // best guess: *down cast type casting response to HTTPURLResponse saying if there is a status code between 200-300 then return the URLResponse (which should be a good URL)
+            // no idea what ~= means! - a pattern matching thingy - does it equal anything within that range? == would be an exact equal, does the return fully give the range back? no, only one value within the range so we use ~=
+            // MarkD brute force >= 200 <= 300
+            // else/otherwise wrap it in this response status code with a specific Int to tell you what the bad response is.
+            // why can't we do this all in one big if else statement
+            
+            // a URLResponse has a subclass of HTTPURLResponse
+            // .dataTask handler returns MUST be (Data?, URLResponse?, Error?) (optionals! which is being handled in the guard let statements)
+            // (200...300) bad code- needs to be (200..<300) because a return of 300 is an error code!
+            guard let response = response as? HTTPURLResponse, (200..<300) ~= response.statusCode else {
+                // dangerous force downcasting ` as! `
+                // optional downcasting ` as? ` in an if let with two branches of the completion(.failure) 1. report status code 2. panic button - then return
+                // (response as! HTTPURLResponse) boils down to the HTTPURLResponse (or a crash with the current code) which has a data return of status code on the HTTPURLResponse type/class and then assign that to the property name statusCode
                 let statusCode = (response as! HTTPURLResponse).statusCode
+                // if our statusCode isn't returning our 200...300 range then we go through this completion handler to manage the rest of whatever statusCodes we may be receiving and then cycle out of the guard let at the return.
                 completion(.failure(NetworkingError.invalidStatusCode(statusCode: statusCode)))
                 return
             }
             
+            // Data is so vague even in the documentation. Slightly unsettled by this.
+            // if we don't get our data then we can return the .invalidData case for the user!
+            // error, response, data
             guard let data = data else {
                 completion(.failure(NetworkingError.invalidData))
                 return
             }
             
+            // do try catch blocks - need to educate more on this.
+            // "If an error is thrown by the code in the do clause, it’s matched against the catch clauses to determine which one of them can handle the error." - swift docs
+            // so if we get an error returned to us in the "do" part of the block... we then ask our "catch" to further clarify the problem?
             do {
+                // does codeable not cover this?
+                // JSONDecoder() Uses Codable to decode!
                 let decoder = JSONDecoder()
+                // "A value that determines how to decode a type’s coding keys from JSON keys." basically further clarification of how we want out JSON data to return and we want it in a Swift readable way e.g. fee_fi_fo_fum (snakeCase) Converts to: feeFiFoFum (camelCase)
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 
+                // what's "try" doing here? It doesn't give me any documentation to work with. try, try?, try!
+                // language key word "the code that follows me has declared that it can throw" either the code to the right is going to run and be successful OR it's going to fail and fall into the catch block below.
+                // success is being defined as: decoder is being asked to decode itself and the return from data?
+                // ` func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable ` so the .decode MUST have a ` try ` to return a throw and fulfill the .decode parameters expectations
+                // .self is compiler required to give it a direction to work with what the generic is
+                // ` from: ` is simply the parameter name Swift chose here.
+                // lego- decode will attempt to build the set and follow the instructions, if it can't then it will bail and throw to the catch block
                 let success = try decoder.decode(T.self, from: data)
+                // if there is a successful return of data please use our success constant right above to give us the deets!
                 completion(.success(success))
             } catch {
+                
+                // if none of the above works, panic button = a decoding failure!
+                // the error we got from the ` try ` in the ` do ` block above, we're going to wrap it in our NetworkingError type and could get more clarifying information of the .decodingFailure at this point.
                 completion(.failure(NetworkingError.decodingFailure(error: error)))
             }
             
@@ -85,6 +126,9 @@ final class NetworkingManager {
 
 extension NetworkingManager {
     // NetworkManager request func may return an error and this is the enum managing those potential returns.
+    // ` invalidURL ` and ` invalidData ` there's nothing to clarify further either it worked or it didn't
+    // ` invalidStatusCode ` the caller may be able to manipulate things to try to fix the return
+    // ` decodingFailure ` and ` unknown ` allowing someone to dig deeper and learn about the more specific Error(type) if they want but not forcing more than that type to return. 
     enum NetworkingError: Error {
         case invalidURL
         case invalidStatusCode(statusCode: Int)

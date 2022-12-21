@@ -21,11 +21,13 @@ final class NetworkingManager {
     
     // generics: <T> we could call this function with any type.
     // <T: Codable> ONLY TYPES THAT EXPLICITLY ADOPT CODABLE CAN BE USED HERE.
+    // Kevin - "explicit"? What's explicit vs. implicit here?
     // the parameter to our completion handler is <T> so the return of this needs to be returnable in a wide variety of data return as long it's codable because we explicitly asked it to be.
     // " _ " in parameters is a "no-name" so that there less need for redundancy and is cleaner at call sites (i.e. line 23 IssueViewModel
     // completion- name of parameter. That's how we reference a closure in the code.
     // completion closure: Type called Result which itself is generic (same type as the original generic by request.)
     // We're building a new type in this line: (Result<T, Error>)
+    // Kevin - Close, Result already exists as a type; we aren't building a new one. We're specifying a particular Success and Failure generic type inside Result
     // completion parameter type acceptance must type Result which is being told to be either the generic <T> or an Error. So this will accept both possible return types.
     // the completion closure itself returns "nothing" aka Void
     // escaping is essentially communicating to the user that the closure is going to have a "lifespan" - MarkDs rock analogy of it possibly being called at some point in the future.
@@ -53,22 +55,31 @@ final class NetworkingManager {
             
             // if the URLSession has an Error return then the error will specifically give back a completion handler with a failure on the NetworkingError enum returning the specific case of unknown error code
             // .failure is a case on Result - how are we accessing that enum? Is that what our completion handler is doing for us on line 35? How do we know we need to wrap the NetworkingError enum within that? I would never have thought to wrap it! (That's what we're doing here, right?)
+            // Kevin - Result is an enum, so once you have an instance of Result you can `switch` over it just like any other enum
             // *must return the specific Result type - aka error/failure
             // MarkD would have used a guard let here- why use an if let? There's no response for data here.
             // must be called once and only once- multiple bad, zero bad
             // general "do we get something back?" if yes, we passed this test and can move on to the more specific criteria below
+            // Kevin - should really `return` after completion is called - that closure should only be called once
             if let error = error {
                 completion(.failure(NetworkingError.unknown(error: error)))
             }
             
             // Check for a success response code
             // why is this constant guarded? - the response parameter type(?) is optional. struggling to understand how this code knows without it being explicitly declared that ` response = URLResponse? `
+            // Kevin - `func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask`
+            //          The compiler the second parameter of `completionHandler` is optional, shift click on response
             // guard let - "is designed to exit the current function, loop, or condition if the check fails, so any values you unwrap using it will stay around after the check." - Paul Hudson
             // best guess: *down cast type casting response to HTTPURLResponse saying if there is a status code between 200-300 then return the URLResponse (which should be a good URL)
+            // Kevin - close, first response is downcasted to HTTPURLResponse, a subclass of URLResponse.
+            //          This also works as a combined optional check, going from `URLResponse?` -> `HTTPURLResponse`
+            //          The second part of the guard is a boolean check, if the `HTTPURLResponse.statusCode` is good (between 200 and 300 by spec)
             // no idea what ~= means! - a pattern matching thingy - does it equal anything within that range? == would be an exact equal, does the return fully give the range back? no, only one value within the range so we use ~=
             // MarkD brute force >= 200 <= 300
             // else/otherwise wrap it in this response status code with a specific Int to tell you what the bad response is.
             // why can't we do this all in one big if else statement
+            // Kevin - we could, but we need to exit scope on failure. Guards let us to separate logic checks and fail
+            //          without ending up with giant nested if statements. See - "pyramid of doom"
             
             // a URLResponse has a subclass of HTTPURLResponse
             // .dataTask handler returns MUST be (Data?, URLResponse?, Error?) (optionals! which is being handled in the guard let statements)
@@ -84,6 +95,7 @@ final class NetworkingManager {
             }
             
             // Data is so vague even in the documentation. Slightly unsettled by this.
+            // Kevin - "Data" is vague because it could be a string, it could be an image, it could be XML, it could be json transmitted as a string, each string could be encoded a different way.
             // if we don't get our data then we can return the .invalidData case for the user!
             // error, response, data
             guard let data = data else {
@@ -94,6 +106,8 @@ final class NetworkingManager {
             // do try catch blocks - need to educate more on this.
             // "If an error is thrown by the code in the do clause, it’s matched against the catch clauses to determine which one of them can handle the error." - swift docs
             // so if we get an error returned to us in the "do" part of the block... we then ask our "catch" to further clarify the problem?
+            // Kevin - yes, catch can clarify the problem... or you can leave it empty and ignore the problem.
+            //          swift tries to push you into "doing the right thing", but it can't tell you what the right thing is.
             do {
                 // does codeable not cover this?
                 // JSONDecoder() Uses Codable to decode!
@@ -107,7 +121,9 @@ final class NetworkingManager {
                 // ` func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable ` so the .decode MUST have a ` try ` to return a throw and fulfill the .decode parameters expectations
                 // .self is compiler required to give it a direction to work with what the generic is
                 // ` from: ` is simply the parameter name Swift chose here.
-                // lego- decode will attempt to build the set and follow the instructions, if it can't then it will bail and throw to the catch block
+                // ergo- decode will attempt to build the set and follow the instructions, if it can't then it will bail and throw to the catch block
+                // Kevin - a do block means the code inside can throw. Multiple lines inside the do block can all throw
+                //          and are visually distinct with try. It's so developers know what can actually throw
                 let success = try decoder.decode(T.self, from: data)
                 // if there is a successful return of data please use our success constant right above to give us the deets!
                 completion(.success(success))

@@ -38,7 +38,9 @@ struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
 // this class is going to build out a view and the content within it.
 class IssuePreviewContentView: UIView, UIContentView {
 // * all things marked "private" are so that they will only show on this class and not be mutable outside of this declaration.
-    // Kevin - `let` makes the varaibles immutable. A `private var` can still be mutated inside `private`
+    // Kevin - `let` makes the variables immutable. A `private var` can still be mutated inside `private`
+    // Re: Kevin - I just read an article that explained the `static` keyword as making the property available outside of the class without instantiating the class. I'm confused why would make these constants static when the struct they're in is specifically private. If logic serves, the properties within the private struct would not be accessible even with an instance of the struct, because the struct shouldn't be accessible at all outside of this class!
+    // I just read another article furthering my understanding of access keywords. So from what I can tell you made this Constants struct private so it can only be used within this IssuePreviewContentView class but due to the static let we don't have to do `var constPic = Constants.pictureSize` we can do `Constants.pictureSize` within this class to use the property if we want. Which you do use actually down on line 97 for the constraints. 
     
     // hard coding the sizing we want for the UI so if there is a problem we can easily adjust it in one spot vs having to debug a whole chain of events.
     private struct Constants {
@@ -46,7 +48,7 @@ class IssuePreviewContentView: UIView, UIContentView {
         static let verticalPadding: CGFloat = 10
         static let horizontalPadding: CGFloat = 20
     }
-
+    
     // MARK: Initialization
 
     // we're force unwrapping the struct from above (we're CONFIDENT it will return a value because we hardcoded it to up above)
@@ -102,6 +104,7 @@ class IssuePreviewContentView: UIView, UIContentView {
     // Kevin - UIView is required to support 2 initializers. Because IssuePreviewContentView is a subclass, it also needs to support those 2 initializers.
     // `init?(coder: NSCoder)` supports storyboard initialization which we aren't supporting in this class.
     // That's why we `fatalError`
+    // I think I need to talk this one out.
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

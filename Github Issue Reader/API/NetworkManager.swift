@@ -22,12 +22,16 @@ final class NetworkingManager {
     // generics: <T> we could call this function with any type.
     // <T: Codable> ONLY TYPES THAT EXPLICITLY ADOPT CODABLE CAN BE USED HERE.
     // Kevin - "explicit"? What's explicit vs. implicit here?
+    // Re: Kevin - we're kind of building in a layer of implicit code here if I understand it correctly. I used the word explicit to help convey the necessity of the codable protocol being qualified here.
+    
     // the parameter to our completion handler is <T> so the return of this needs to be returnable in a wide variety of data return as long it's codable because we explicitly asked it to be.
     // " _ " in parameters is a "no-name" so that there less need for redundancy and is cleaner at call sites (i.e. line 23 IssueViewModel
     // completion- name of parameter. That's how we reference a closure in the code.
     // completion closure: Type called Result which itself is generic (same type as the original generic by request.)
     // We're building a new type in this line: (Result<T, Error>)
     // Kevin - Close, Result already exists as a type; we aren't building a new one. We're specifying a particular Success and Failure generic type inside Result
+    // Re: Kevin - I realized that as we got further down into the class, the generics are being applied to the Success and the kind of data we allow to intake to be particular.
+    
     // completion parameter type acceptance must type Result which is being told to be either the generic <T> or an Error. So this will accept both possible return types.
     // the completion closure itself returns "nothing" aka Void
     // escaping is essentially communicating to the user that the closure is going to have a "lifespan" - MarkDs rock analogy of it possibly being called at some point in the future.
@@ -56,6 +60,8 @@ final class NetworkingManager {
             // if the URLSession has an Error return then the error will specifically give back a completion handler with a failure on the NetworkingError enum returning the specific case of unknown error code
             // .failure is a case on Result - how are we accessing that enum? Is that what our completion handler is doing for us on line 35? How do we know we need to wrap the NetworkingError enum within that? I would never have thought to wrap it! (That's what we're doing here, right?)
             // Kevin - Result is an enum, so once you have an instance of Result you can `switch` over it just like any other enum
+            // Re: Kevin - Again, I embarrassingly realized this after digging a little.
+            
             // *must return the specific Result type - aka error/failure
             // MarkD would have used a guard let here- why use an if let? There's no response for data here.
             // must be called once and only once- multiple bad, zero bad
@@ -80,6 +86,7 @@ final class NetworkingManager {
             // why can't we do this all in one big if else statement
             // Kevin - we could, but we need to exit scope on failure. Guards let us to separate logic checks and fail
             //          without ending up with giant nested if statements. See - "pyramid of doom"
+            // Re: Kevin - Ew.
             
             // a URLResponse has a subclass of HTTPURLResponse
             // .dataTask handler returns MUST be (Data?, URLResponse?, Error?) (optionals! which is being handled in the guard let statements)

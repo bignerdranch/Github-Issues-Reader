@@ -123,10 +123,18 @@ class ViewController: UIViewController {
         
         // pinning it to the view so it doesn't float around and explode
         // Kevin - what's the downside of this approach
+        // Re: Kevin - Pinning the
         NSLayoutConstraint.activate([
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        // code snippet example from my ApprenTicTacToe app. Here we pin it to the centerX and centerY container on top of the width and height frame. I don't have that in the code above which is probably unsafe since with UIKit I need to very pointedly tell the views where to pin things so it doesn't randomly show up somewhere nonsensical with each app launch. I often hesitate to hard code a view somewhere due to the wide variety of device display needs. I just randomly picked 300 in the code below and it was fine though...
+//        NSLayoutConstraint.activate([
+//            containerStackView.heightAnchor.constraint(equalToConstant: 300 ),
+//            containerStackView.widthAnchor.constraint(equalToConstant: 300 ),
+//            containerStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            containerStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+//        ])
     }
 
     @objc func fetchIssues() {
@@ -143,17 +151,18 @@ class ViewController: UIViewController {
         // while it's loading here is a cute UI thing to tell you the networking call is happening from "now" up to 5 seconds after launching the call which will make it time out and quits/crashes
         activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            // pulling in the IssueViewModel into this file to manipulate data within it.
-            // Creating an instance of IssueViewModel, not `pulling`
+            // Creating an instance of IssueViewModel, not `pulling` in the IssueViewModel into this file to manipulate the data within it.
             let viewModel = IssueViewModel()
             // pulling the fetchIssues from the VM
             // Kevin - "pulling" isn't what goes on here. `viewModel.issues` would be pulling them.
+            // Re: Kevin - so with `viewModel.fetchIssues` this is me instantiating the IssueViewModel fetchIssues func here in the ViewController fetchIssues func?
             // making the repo and organization fill in for the conditionals on the fetchIssues func from the VM
-            // Kevin - paremters which are required, not conditionals
+            // Kevin - parameters which are required, not conditionals
+            // Re: Kevin - I was using them interchangeably here but looking into the difference further I realize that there's actually a fairly big difference! Conditions are Boolean based and often used in if else statements. Parameters are essentially expectations we need fulfilled to be able to run the functions code.
             viewModel.fetchIssues(for: organization, repo: repo) { [self] issues in
                 print("Successfully received issues.")
                 
-                // pulling in the fileIssuesCollectionVC and filling in the conditional of the VM (IssueViewModel)
+                // declaring the property to instantiating and initializing the class IssuesCollectionVC and filling in the parameters of the VM (IssueViewModel)
                 // Kevin - "pulling" again + `IssueViewModel` isn't conditional
                 let issuesVC = IssuesCollectionVC(viewModel: viewModel)
                 // assigning it to be the next view in the chain of events in the navController and animate the presentation.

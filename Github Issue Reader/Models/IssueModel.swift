@@ -12,6 +12,7 @@ import UIKit
 
 // the data within the struct is going to need to conform to the protocols codable and hashable so we take those types in at the beginning.
 // Kevin - the data in the struct (strings, ints...) are already Equatable and Hashable.
+// Re: Kevin - if these already conform to those protocols, why do we need to ask the struct to be codable and hashable?
 struct Issue: Codable, Hashable {
     // every constant below is pulled from the JSON data model in the API most of the data is required in the API so it's okay that they're non-optional. Only optional is the "body" property because it could return a nil
     let id: Int

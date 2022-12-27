@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-// Ignore content configuration - 2 hours
+// Ignore content configuration - 2 hours (not a super common way to do things)
+// Content configuration is our "view model" here, a "go between" the UI and logic in the app.
 
 struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
 
@@ -17,6 +18,7 @@ struct IssuePreviewContentConfiguration: UIContentConfiguration, Hashable {
     let status: String
     let statusColor: UIColor
 
+    // we're declaring the values from the Issue class properties.
     init(issue: Issue) {
         issueTitle = issue.title
         username = issue.user.login
@@ -40,8 +42,8 @@ class IssuePreviewContentView: UIView, UIContentView {
 // * all things marked "private" are so that they will only show on this class and not be mutable outside of this declaration.
     // Kevin - `let` makes the variables immutable. A `private var` can still be mutated inside `private`
     // Re: Kevin - I just read an article that explained the `static` keyword as making the property available outside of the class without instantiating the class. I'm confused why would make these constants static when the struct they're in is specifically private. If logic serves, the properties within the private struct would not be accessible even with an instance of the struct, because the struct shouldn't be accessible at all outside of this class!
-    // I just read another article furthering my understanding of access keywords. So from what I can tell you made this Constants struct private so it can only be used within this IssuePreviewContentView class but due to the static let we don't have to do `var constPic = Constants.pictureSize` we can do `Constants.pictureSize` within this class to use the property if we want. Which you do use actually down on line 97 for the constraints. 
-    
+    // I just read another article furthering my understanding of access keywords. So from what I can tell you made this Constants struct private so it can only be used within this IssuePreviewContentView class but due to the static let we don't have to do `var constPic = Constants.pictureSize` we can do `Constants.pictureSize` within this class to use the property if we want. Which you do use actually down on lines 81-86, 99 for the constraints.
+    // so this class is building our cells (30 with each load) and we don't need to make the sizing properties over and over for every single cell so we can do it once here as a general application with the `static let` and reuse that per cell.
     // hard coding the sizing we want for the UI so if there is a problem we can easily adjust it in one spot vs having to debug a whole chain of events.
     private struct Constants {
         static let pictureSize: CGFloat = 20
@@ -53,13 +55,16 @@ class IssuePreviewContentView: UIView, UIContentView {
 
     // we're force unwrapping the struct from above (we're CONFIDENT it will return a value because we hardcoded it to up above)
     // Kevin - this struct is described above, but it comes from the initializer below
-    private var contentConfiguration: IssuePreviewContentConfiguration!
+    private var contentConfiguration: IssuePreviewContentConfiguration
 
     // are we simply telling content configuration to conform to everything in the IssuePreviewContentConfiguration struct and making it a view?
     // Kevin - we initialize the UIView, then store the instance of `IssuePreviewContentConfiguration` that we were given, then setup views
+    // we have to initialize our class IssuePreviewContentView which is a SUBCLASS of UIView. `super.init(frame: .zero)` is our parent/super class (the frame is a place holder for configuration of auto layout which is used later)
     init(configuration: IssuePreviewContentConfiguration) {
-        super.init(frame: .zero)
+        // assigning the value parameter named configuration which is type IssuePreviewContentConfiguration
+        // we have to init. our subclass properties BEFORE our superclass init.
         self.contentConfiguration = configuration
+        super.init(frame: .zero)
         setupViews()
     }
     
@@ -104,7 +109,8 @@ class IssuePreviewContentView: UIView, UIContentView {
     // Kevin - UIView is required to support 2 initializers. Because IssuePreviewContentView is a subclass, it also needs to support those 2 initializers.
     // `init?(coder: NSCoder)` supports storyboard initialization which we aren't supporting in this class.
     // That's why we `fatalError`
-    // I think I need to talk this one out.
+    // `required` because of the UIView - not doing any other work here other than meeting those class needs so we do have the keyword in front of it.
+    // NSCoder is like a package of view settings and subviews. It "encodes" a view. thus the possibilities of it failing in an optional fashion.
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -174,7 +180,7 @@ class IssuePreviewContentView: UIView, UIContentView {
 
     // MARK: UIContentView
     
-    // this is a huge property bringing in all the
+    // this is a huge property bringing in all the configurations going through the property contentConfiguration which is an instantiation of the IssuePreviewContentConfiguration class
     var configuration: UIContentConfiguration {
         get {
             contentConfiguration

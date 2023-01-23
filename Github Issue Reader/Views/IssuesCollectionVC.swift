@@ -10,7 +10,6 @@ import UIKit
 // 1 day - focused on DiffableDataSource. Review the PR that Kevin will put up w/loading
 // 1 day - convert this to UITableView - explore both diffable and datasource/delegate methods
 
-//
 class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     private struct Section: Hashable {

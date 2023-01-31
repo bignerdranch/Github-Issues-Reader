@@ -1,5 +1,5 @@
 //
-//  UserModel .swift
+//  User.swift
 //  Github Issue Reader
 //
 //  Created by Savannah Sosa on 8/30/22.

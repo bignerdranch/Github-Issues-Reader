@@ -183,19 +183,19 @@ class ViewController: UIViewController {
     // a basic property declaration of the loading UI is going to be called this and look like this... (more clarification of specifics to come in func below)
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    func activateIndicator() {
+    // func activateIndicator() {
         // create a variable to hold an empty view for us to modify
-        let container = UIView()
+        // let container = UIView()
         // giving the view space guidelines to work within
-        container.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        // container.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
 
         // slap that activity thing in the center of itself
-        activityIndicator.center = self.view.center
+        // activityIndicator.center = self.view.center
 
         // put the activity UI into the empty UIView
-        container.addSubview(activityIndicator)
+        // container.addSubview(activityIndicator)
         // adding the container to the view of the ViewController
-        self.view.addSubview(container)
+        // self.view.addSubview(container)
 
         // Kevin - the empty UIView container is actually completely redundant here.
         // It has no size, no content and no layout constraints
@@ -203,5 +203,5 @@ class ViewController: UIViewController {
         
         // activityIndicator.center = self.view.center
         // self.view.addSubview(activityIndicator)
-    }
+    // }
 }

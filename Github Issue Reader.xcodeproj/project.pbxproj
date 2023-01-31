@@ -264,6 +264,7 @@
 				FFB3D64428BE8B6C005DB032 /* ViewController.swift in Sources */,
 				FFB3D65E28BFD03B005DB032 /* IssueViewModel.swift in Sources */,
 				FFB3D65728BE8E5C005DB032 /* Issue.swift in Sources */,
+				B68DE151293E90BF005E4A8F /* IssueLoadingCell.swift in Sources */,
 
 				FD157EF428C0032000A05E12 /* IssuesCollectionVC.swift in Sources */,
 				FFB3D65928BE8FB8005DB032 /* User.swift in Sources */,

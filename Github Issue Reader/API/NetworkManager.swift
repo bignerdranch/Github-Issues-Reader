@@ -38,7 +38,7 @@ final class NetworkingManager {
     // It's important that the completion parameter is @escaping because we might fall off the bottom of request before we use it. "hey don't forget about me because we might use you later after you've been called"
     func request<T: Codable>(_ urlString: String,
                              type: T.Type,
-                             completion: @escaping (Result<T, Error>) -> Void) {
+                             completion: @escaping (Result<T, NetworkingError>) -> Void) {
         
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkingError.invalidURL))
@@ -158,5 +158,35 @@ extension NetworkingManager {
         case invalidData
         case decodingFailure(error: Error)
         case unknown(error: Error)
+
+        var title: String {
+            switch self {
+            case .invalidURL:
+                return "Invalid URL"
+            case .invalidStatusCode:
+                return "Invalid Status Code"
+            case .invalidData:
+                return "Invalid Data"
+            case .decodingFailure:
+                return "Decoding Failure"
+            case .unknown:
+                return "Unknown"
+            }
+        }
+
+        var description: String? {
+            switch self {
+            case .invalidURL:
+                return nil
+            case .invalidStatusCode(statusCode: let statusCode):
+                return "\(statusCode)"
+            case .invalidData:
+                return nil
+            case .decodingFailure(let error):
+                return error.localizedDescription
+            case .unknown(let error):
+                return error.localizedDescription
+            }
+        }
     }
 }

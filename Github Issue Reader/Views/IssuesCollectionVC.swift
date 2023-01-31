@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 // 1 day - focused on DiffableDataSource. Review the PR that Kevin will put up w/loading
 // 1 day - convert this to UITableView - explore both diffable and datasource/delegate methods
@@ -15,8 +16,25 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
     private struct Section: Hashable {
         let section: Int
     }
+    private enum Row: Hashable {
+        case issue(Issue)
+        case loading
+        case error(ErrorDetails)
+    }
+
+    private struct ErrorDetails: Hashable {
+        let title: String
+        let description: String?
+
+        init(_ error: NetworkingManager.NetworkingError) {
+            self.title = error.title
+            self.description = error.description
+        }
+    }
 
     private let viewModel: IssueViewModel
+    private let mainSection = Section(section: 0)
+    private var subscriptions = Set<AnyCancellable>()
 
     init(viewModel: IssueViewModel) {
         let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
@@ -33,13 +51,6 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
         super.viewDidLoad()
         configureViewController()
         configureCollectionView()
-
-        // Load initial data
-        var snapshot = dataSource.snapshot()
-        let section = Section(section: 0)
-        snapshot.appendSections([section])
-        snapshot.appendItems(viewModel.issues, toSection: section)
-        dataSource.apply(snapshot)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,18 +65,59 @@ class IssuesCollectionVC: UICollectionViewController, UICollectionViewDelegateFl
 
     // MARK: UICollectionView
 
-    private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Issue> = {
-        let registration = UICollectionView.CellRegistration<UICollectionViewListCell, Issue> { cell, indexPath, itemIdentifier in
-            cell.contentConfiguration = IssuePreviewContentConfiguration(issue: itemIdentifier)
+    private func configureCollectionView() {
+        collectionView.backgroundColor = .systemGray2
+        collectionView.register(IssueLoadingCell.self, forCellWithReuseIdentifier: IssueLoadingCell.identifier)
+
+        // Case 1 - good load
+        //      initial - ([], nil)
+        //      after load - ([issue 1, issue 2, ...], nil)
+
+        // Case 2 - bad load
+        //      initial - ([], nil)
+        //      after load - ([], "The operation couldn't be completed....")
+        viewModel.$issues.combineLatest(viewModel.$error).sink { issues, error in
+            var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
+            snapshot.appendSections([self.mainSection])
+
+            if let error = error {
+                snapshot.appendItems([.error(ErrorDetails(error))], toSection: self.mainSection)
+            } else if issues.isEmpty {
+                // Technically we could query a repo with no issues and result in infinite loading indicator,
+                // but what are the chances of that...
+                print("Displaying loading indicator")
+                snapshot.appendItems([.loading], toSection: self.mainSection)
+            } else {
+                print("Displaying \(issues.count) issues")
+                snapshot.appendItems(issues.map { .issue($0) }, toSection: self.mainSection)
+            }
+
+            self.dataSource.apply(snapshot)
+        }.store(in: &subscriptions)
+    }
+
+    private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Row> = {
+        let issueRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, Issue> { cell, indexPath, issue in
+            cell.contentConfiguration = IssuePreviewContentConfiguration(issue: issue)
         }
-        return .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
-            let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: itemIdentifier)
-            cell.accessories = [.disclosureIndicator()]
-            return cell
+        let errorRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, ErrorDetails> { cell, indexPath, errorDetails in
+            var content = UIListContentConfiguration.subtitleCell()
+            content.text = errorDetails.title
+            content.secondaryText = errorDetails.description
+
+            cell.contentConfiguration = content
+        }
+        return .init(collectionView: collectionView) { collectionView, indexPath, row in
+            switch row {
+            case .issue(let issue):
+                let cell = collectionView.dequeueConfiguredReusableCell(using: issueRegistration, for: indexPath, item: issue)
+                cell.accessories = [.disclosureIndicator()]
+                return cell
+            case .loading:
+                return collectionView.dequeueReusableCell(withReuseIdentifier: IssueLoadingCell.identifier, for: indexPath)
+            case .error(let error):
+               return collectionView.dequeueConfiguredReusableCell(using: errorRegistration, for: indexPath, item: error)
+            }
         }
     }()
-
-    func configureCollectionView() {
-        collectionView.backgroundColor = .systemGray2
-    }
 }

@@ -96,7 +96,6 @@ class ViewController: UIViewController {
         repoTextfield.text = "Swift"
         
         setupUI()
-        activateIndicator()
     }
     
     // this is a catch all func to handle constraints etc.
@@ -148,7 +147,17 @@ class ViewController: UIViewController {
             return
         }
         
-        // while it's loading here is a cute UI thing to tell you the networking call is happening from "now" up to 5 seconds after launching the call which will make it time out and quits/crashes
+        let viewModel = IssueViewModel()
+        let issuesVC = IssuesCollectionVC(viewModel: viewModel)
+        navigationController?.pushViewController(issuesVC, animated: true)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            viewModel.fetchIssues(for: organization, repo: repo) { issues in
+            }
+        }
+    }
+      
+      // while it's loading here is a cute UI thing to tell you the networking call is happening from "now" up to 5 seconds after launching the call which will make it time out and quits/crashes
         activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             // Creating an instance of IssueViewModel, not `pulling` in the IssueViewModel into this file to manipulate the data within it.
@@ -170,9 +179,7 @@ class ViewController: UIViewController {
                 navigationController?.pushViewController(issuesVC, animated: true)
                 // once the new viewController has been pushed through after the networking call make the activity loading stop showing.
                 activityIndicator.stopAnimating()
-            }
-        }
-    }
+                
     // a basic property declaration of the loading UI is going to be called this and look like this... (more clarification of specifics to come in func below)
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
@@ -197,6 +204,4 @@ class ViewController: UIViewController {
         // activityIndicator.center = self.view.center
         // self.view.addSubview(activityIndicator)
     }
-    
 }
-

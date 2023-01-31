@@ -10,12 +10,17 @@ import Foundation
 // 2 hours fetch, 6 hours async await
 // 4 hours sorting - understand closures
 // 2 days - sorting
+
 class IssueViewModel {
-    
-    var issues: [Issue] = []
-    
+
+    @Published var issues: [Issue] = []
+    @Published var error: NetworkingManager.NetworkingError?
+
     func fetchIssues(for organization: String, repo: String, completion: @escaping (_ downloadedIssues: [Issue]?) -> Void) {
+    
          let url = "https://api.github.com/repos/\(organization)/\(repo)/issues"
+        // Bad url for testing error logic
+        //let url = "https://api.github.com/asdjfaklsdjfaldksjflkas/repos/\(organization)/\(repo)/issues"
         // networkingManager class on compile then shared property on runtime.
         // due to the static let of the shared property in the NetworkManager file we do NOT have to create an instance in this class to call the func and other things. i.e.
         // var nm = networkingM()
@@ -33,6 +38,7 @@ class IssueViewModel {
                  }
              }
          }
+
      }
 
     func fetchIssuesAsync(for organization: String, repo: String) async -> [Issue]? {
